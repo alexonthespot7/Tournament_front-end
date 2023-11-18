@@ -3,11 +3,29 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import ContextProvider from './context/ContextProvider';
+import { ThemeProvider, createTheme } from '@mui/material';
+
+const theme = createTheme({
+  palette: {
+    secondary: {
+      main: '#171717',
+    },
+  },
+  typography: {
+    fontFamily: 'Lato, sans-serif',
+
+  },
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <ContextProvider>
+        <App />
+      </ContextProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
 
