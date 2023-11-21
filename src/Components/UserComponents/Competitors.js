@@ -67,7 +67,7 @@ export default function Competitors() {
 
 
     return (
-        <Box sx={{ mt: 2 }} width='70%' display='flex' flexDirection='column' justifyContent='center' height='100%'>
+        <Box sx={{ mt: 3 }} width='70%' display='flex' flexDirection='column' justifyContent='center' height='100%'>
             <Typography variant="h4" sx={{ mb: 4 }}>
                 Competitors
             </Typography>
