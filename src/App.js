@@ -7,6 +7,7 @@ import Main from './Components/Main';
 import Login from './Components/PublicComponents/Login';
 import Signup from './Components/PublicComponents/Signup';
 import Competitors from './Components/UserComponents/Competitors';
+import PersonalPage from './Components/UserComponents/PersonalPage';
 
 function App() {
   const { windowSize } = useContext(ContextWrapper);
@@ -39,7 +40,7 @@ function App() {
           <div className='thin-line right-top second' style={{ marginLeft: -25, marginTop: 20 }}></div>
           <div className='thin-line right-top' style={{ marginLeft: -50, marginTop: 20 }}></div>
         </Stack>
-        <Main />
+        <PersonalPage />
       </div>
     </div>
   );

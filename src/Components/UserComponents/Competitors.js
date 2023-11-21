@@ -120,48 +120,61 @@ export default function Competitors() {
                 Competitors
             </Typography>
             <List
-                subheader={<ListSubheader color='secondary' sx={{ backgroundColor: '#f0f0f0', boxShadow: 7, py: '1%', px: '2%', m: '1%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Box display='flex' flexDirection='row' sx={{ flex: 1 }} alignItems='center'>
-                        <Typography
-                            align='left'
-                            fontWeight={900}
-                            fontSize={20}
-                            sx={{ '&:hover': { cursor: 'pointer' }, }}
-                            onClick={() => sortState === 'stage_asc' ? setSortState('stage_desc') : sortState === 'stage_desc' ? setSortState('none') : setSortState('stage_asc')}
-                        >
-                            Stage
-                        </Typography>
-                        {sortState === 'stage_asc' && <NorthIcon fontSize='small' />}
-                        {sortState === 'stage_desc' && <SouthIcon fontSize='small' />}
-                    </Box>
-                    <Box display='flex' flexDirection='row' sx={{ flex: 5 }} justifyContent='center' alignItems='center'>
-                        <Typography
-                            align='center'
-                            fontWeight={900}
-                            fontSize={20}
-                            sx={{ '&:hover': { cursor: 'pointer' }, }}
-                            onClick={() => sortState === 'username_asc' ? setSortState('username_desc') : sortState === 'username_desc' ? setSortState('none') : setSortState('username_asc')}
-                        >
-                            Username
-                        </Typography>
-                        {sortState === 'username_asc' && <NorthIcon fontSize='small' />}
-                        {sortState === 'username_desc' && <SouthIcon fontSize='small' />}
-                    </Box>
-                    <Box display='flex' flexDirection='row' sx={{ flex: 1 }} justifyContent='flex-end' alignItems='center'>
-                        {sortState === 'status_asc' && <NorthIcon fontSize='small' />}
-                        {sortState === 'status_desc' && <SouthIcon fontSize='small' />}
-                        <Typography
-                            align='right'
-                            fontWeight={900}
-                            fontSize={20}
-                            sx={{ '&:hover': { cursor: 'pointer' }, }}
-                            onClick={() => sortState === 'status_asc' ? setSortState('status_desc') : sortState === 'status_desc' ? setSortState('none') : setSortState('status_asc')}
-                        >
-                            Status
-                        </Typography>
-                    </Box>
-                </ListSubheader>}
                 sx={{ width: '70%', maxHeight: '65%', overflow: 'auto' }}
+                subheader={
+                    <ListSubheader
+                        color='secondary'
+                        sx={{
+                            backgroundColor: '#f0f0f0',
+                            boxShadow: 7,
+                            py: '1%',
+                            px: '2%',
+                            m: '1%',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between'
+                        }}
+                    >
+                        <Box display='flex' flexDirection='row' sx={{ flex: 1 }} alignItems='center'>
+                            <Typography
+                                align='left'
+                                fontWeight={900}
+                                fontSize={20}
+                                sx={{ '&:hover': { cursor: 'pointer' }, }}
+                                onClick={() => sortState === 'stage_asc' ? setSortState('stage_desc') : sortState === 'stage_desc' ? setSortState('none') : setSortState('stage_asc')}
+                            >
+                                Stage
+                            </Typography>
+                            {sortState === 'stage_asc' && <NorthIcon fontSize='small' />}
+                            {sortState === 'stage_desc' && <SouthIcon fontSize='small' />}
+                        </Box>
+                        <Box display='flex' flexDirection='row' sx={{ flex: 5 }} justifyContent='center' alignItems='center'>
+                            <Typography
+                                align='center'
+                                fontWeight={900}
+                                fontSize={20}
+                                sx={{ '&:hover': { cursor: 'pointer' }, }}
+                                onClick={() => sortState === 'username_asc' ? setSortState('username_desc') : sortState === 'username_desc' ? setSortState('none') : setSortState('username_asc')}
+                            >
+                                Username
+                            </Typography>
+                            {sortState === 'username_asc' && <NorthIcon fontSize='small' />}
+                            {sortState === 'username_desc' && <SouthIcon fontSize='small' />}
+                        </Box>
+                        <Box display='flex' flexDirection='row' sx={{ flex: 1 }} justifyContent='flex-end' alignItems='center'>
+                            {sortState === 'status_asc' && <NorthIcon fontSize='small' />}
+                            {sortState === 'status_desc' && <SouthIcon fontSize='small' />}
+                            <Typography
+                                align='right'
+                                fontWeight={900}
+                                fontSize={20}
+                                sx={{ '&:hover': { cursor: 'pointer' }, }}
+                                onClick={() => sortState === 'status_asc' ? setSortState('status_desc') : sortState === 'status_desc' ? setSortState('none') : setSortState('status_asc')}
+                            >
+                                Status
+                            </Typography>
+                        </Box>
+                    </ListSubheader>}
             >
                 {filteredCompetitors.map((competitor, index) => (
                     <Card key={index} sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', py: '2%', px: '3%', m: '1%' }}>
