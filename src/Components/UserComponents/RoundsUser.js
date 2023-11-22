@@ -84,42 +84,40 @@ const competitors = [
 
 ];
 
-//different sorting cases
-const sortMethods = {
-    none: { method: () => null },
-    username_asc: { method: (a, b) => a.username.localeCompare(b.username) },
-    username_desc: { method: (a, b) => b.username.localeCompare(a.username) },
-
-    //special case for sorting final, also sorting backwards, as 1/2 is logically higher than 1/4, etc.
-    stage_asc: {
-        method: (a, b) => {
-            if ([a.stage, b.stage].includes('final')) return a.stage.localeCompare(b.stage);
-            return b.stage.localeCompare(a.stage);
-        }
-    },
-    stage_desc: {
-        method: (a, b) => {
-            if ([a.stage, b.stage].includes('final')) return b.stage.localeCompare(a.stage);
-            return a.stage.localeCompare(b.stage);
-        }
-    },
-    status_asc: { method: (a, b) => a.isOut - b.isOut },
-    status_desc: { method: (a, b) => b.isOut - a.isOut }
-}
-
-export default function Competitors() {
+export default function RoundsUser() {
 
     //state for sort handling
     const [sortState, setSortState] = useState('none');
 
+    //different sorting cases
+    const sortMethods = {
+        none: { method: () => null },
+        username_asc: { method: (a, b) => a.username.localeCompare(b.username) },
+        username_desc: { method: (a, b) => b.username.localeCompare(a.username) },
 
+        //special case for sorting final, also sorting backwards, as 1/2 is logically higher than 1/4, etc.
+        stage_asc: {
+            method: (a, b) => {
+                if ([a.stage, b.stage].includes('final')) return a.stage.localeCompare(b.stage);
+                return b.stage.localeCompare(a.stage);
+            }
+        },
+        stage_desc: {
+            method: (a, b) => {
+                if ([a.stage, b.stage].includes('final')) return b.stage.localeCompare(a.stage);
+                return a.stage.localeCompare(b.stage);
+            }
+        },
+        status_asc: { method: (a, b) => a.isOut - b.isOut },
+        status_desc: { method: (a, b) => b.isOut - a.isOut }
+    }
 
     const filteredCompetitors = competitors.sort(sortMethods[sortState].method);
 
     return (
         <Box sx={{ mt: 5 }} width='100%' display='flex' flexDirection='column' justifyContent='center' alignItems='center' height='90%' >
             <Typography variant="h4" sx={{ mb: 2 }}>
-                Competitors
+                Rounds
             </Typography>
             <List
                 sx={{ width: '70%', maxHeight: '65%', overflow: 'auto' }}

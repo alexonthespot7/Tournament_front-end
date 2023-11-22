@@ -1,6 +1,8 @@
 import { Box, Card, IconButton, List, ListSubheader, Typography } from "@mui/material";
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
+import NorthIcon from '@mui/icons-material/North';
+import SouthIcon from '@mui/icons-material/South';
 import { useState } from "react";
 
 const personalInfo = {
@@ -15,31 +17,71 @@ const personalInfo = {
             usernameOfCompetitor1: 'alexonthespot',
             usernameOfCompetitor2: 'Messi2281',
             stage: '1/8',
-            result: 'Alex win'
+            result: 'alexonthespot win'
         },
         {
             usernameOfCompetitor1: 'alexonthespot',
             usernameOfCompetitor2: 'Messi2281',
             stage: '1/8',
-            result: 'Alex win'
+            result: 'alexonthespot win'
+        },
+        {
+            usernameOfCompetitor1: 'alexonthespot',
+            usernameOfCompetitor2: 'Messi22281',
+            stage: '1/4',
+            result: 'Messi22281 win'
         },
         {
             usernameOfCompetitor1: 'alexonthespot',
             usernameOfCompetitor2: 'Messi2281',
             stage: '1/8',
-            result: 'Alex win'
-        },
-        {
-            usernameOfCompetitor1: 'alexonthespot',
-            usernameOfCompetitor2: 'Messi2281',
-            stage: '1/8',
-            result: 'Alex win'
+            result: 'alexonthespot win'
         }
     ]
 }
 
+const findOpponent = (round) => {
+    return round.usernameOfCompetitor1 === personalInfo.username ? round.usernameOfCompetitor2 : round.usernameOfCompetitor1;
+}
+
+const findResult = (round) => {
+    let result = round.result;
+    if (!result.includes(' ')) return 'No';
+    let winner = result.substring(0, result.indexOf(' '));
+    return winner === personalInfo.username ? 'Victory' : 'Defeat';
+}
+
+//different sorting cases
+const sortMethods = {
+    none: { method: () => null },
+    opponent_asc: { method: (a, b) => findOpponent(a).localeCompare(findOpponent(b)) },
+    opponent_desc: { method: (a, b) => findOpponent(b).localeCompare(findOpponent(a)) },
+
+    //special case for sorting final, also sorting backwards, as 1/2 is logically higher than 1/4, etc.
+    stage_asc: {
+        method: (a, b) => {
+            if ([a.stage, b.stage].includes('final')) return a.stage.localeCompare(b.stage);
+            return b.stage.localeCompare(a.stage);
+        }
+    },
+    stage_desc: {
+        method: (a, b) => {
+            if ([a.stage, b.stage].includes('final')) return b.stage.localeCompare(a.stage);
+            return a.stage.localeCompare(b.stage);
+        }
+    },
+    result_asc: { method: (a, b) => findResult(a).localeCompare(findResult(b)) },
+    result_desc: { method: (a, b) => findResult(b).localeCompare(findResult(a)) }
+}
+
 export default function PersonalPage() {
     const [isEditing, setIsEditing] = useState(false);
+    //state for sort handling
+    const [sortState, setSortState] = useState('none');
+
+
+
+    const filteredRounds = personalInfo.publicRounds.sort(sortMethods[sortState].method);
 
     return (
         <Box sx={{ mt: '4%' }} gap='2.5%' width='100%' display='flex' flexDirection='column' justifyContent='center' alignItems='center' height='90%' >
@@ -105,9 +147,12 @@ export default function PersonalPage() {
                                 fontWeight={900}
                                 fontSize={20}
                                 sx={{ '&:hover': { cursor: 'pointer' }, }}
+                                onClick={() => sortState === 'stage_asc' ? setSortState('stage_desc') : sortState === 'stage_desc' ? setSortState('none') : setSortState('stage_asc')}
                             >
                                 Stage
                             </Typography>
+                            {sortState === 'stage_asc' && <NorthIcon fontSize='small' />}
+                            {sortState === 'stage_desc' && <SouthIcon fontSize='small' />}
                         </Box>
                         <Box display='flex' flexDirection='row' sx={{ flex: 5 }} justifyContent='center' alignItems='center'>
                             <Typography
@@ -115,27 +160,33 @@ export default function PersonalPage() {
                                 fontWeight={900}
                                 fontSize={20}
                                 sx={{ '&:hover': { cursor: 'pointer' }, }}
+                                onClick={() => sortState === 'opponent_asc' ? setSortState('opponent_desc') : sortState === 'opponent_desc' ? setSortState('none') : setSortState('opponent_asc')}
                             >
                                 Opponent
                             </Typography>
+                            {sortState === 'opponent_asc' && <NorthIcon fontSize='small' />}
+                            {sortState === 'opponent_desc' && <SouthIcon fontSize='small' />}
                         </Box>
                         <Box display='flex' flexDirection='row' sx={{ flex: 1 }} justifyContent='flex-end' alignItems='center'>
+                            {sortState === 'result_asc' && <NorthIcon fontSize='small' />}
+                            {sortState === 'result_desc' && <SouthIcon fontSize='small' />}
                             <Typography
                                 align='right'
                                 fontWeight={900}
                                 fontSize={20}
                                 sx={{ '&:hover': { cursor: 'pointer' }, }}
+                                onClick={() => sortState === 'result_asc' ? setSortState('result_desc') : sortState === 'result_desc' ? setSortState('none') : setSortState('result_asc')}
                             >
                                 Result
                             </Typography>
                         </Box>
                     </ListSubheader>}
             >
-                {personalInfo.publicRounds.map((round, index) => (
+                {filteredRounds.map((round, index) => (
                     <Card key={index} sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', py: '2%', px: '3%', m: '1%' }}>
                         <Typography align='left' sx={{ flex: 1 }}>{round.stage} </Typography>
-                        <Typography align='center' sx={{ flex: 5 }}>{round.usernameOfCompetitor1 === personalInfo.username ? round.usernameOfCompetitor2 : round.usernameOfCompetitor1} </Typography>
-                        <Typography align='right' sx={{ flex: 1 }}>{round.result} </Typography>
+                        <Typography align='center' sx={{ flex: 5 }}>{findOpponent(round)} </Typography>
+                        <Typography align='right' sx={{ flex: 1 }}>{findResult(round)} </Typography>
                     </Card>
                 ))}
             </List>}

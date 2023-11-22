@@ -8,6 +8,7 @@ import Login from './Components/PublicComponents/Login';
 import Signup from './Components/PublicComponents/Signup';
 import Competitors from './Components/UserComponents/Competitors';
 import PersonalPage from './Components/UserComponents/PersonalPage';
+import RoundsUser from './Components/UserComponents/RoundsUser';
 
 function App() {
   const { windowSize } = useContext(ContextWrapper);
