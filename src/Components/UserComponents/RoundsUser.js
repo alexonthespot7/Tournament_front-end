@@ -5,84 +5,49 @@ import { Box, Card, IconButton, List, ListItem, ListItemText, ListSubheader, Typ
 import { useState } from 'react';
 
 
-const competitors = [
+const rounds = [
     {
-        username: 'Alex',
-        isOut: false,
-        stage: '1/2'
+        usernameOfCompetitor1: 'Alex',
+        usernameOfCompetitor2: 'messi22822',
+        stage: '1/2',
+        result: 'Alex win'
     },
     {
-        username: 'Anto',
-        isOut: false,
-        stage: '1/2'
+        usernameOfCompetitor1: 'ferz',
+        usernameOfCompetitor2: 'gigi',
+        stage: '1/2',
+        result: 'ferz win'
     },
     {
-        username: 'Maessy',
-        isOut: false,
-        stage: '1/2'
+        usernameOfCompetitor1: 'Alex',
+        usernameOfCompetitor2: 'shoes',
+        stage: '1/4',
+        result: 'Alex win'
     },
     {
-        username: 'Menet',
-        isOut: false,
-        stage: '1/2'
+        usernameOfCompetitor1: 'ferz',
+        usernameOfCompetitor2: 'griixy',
+        stage: '1/4',
+        result: 'ferz win'
     },
     {
-        username: 'Greedy',
-        isOut: true,
-        stage: '1/4'
+        usernameOfCompetitor1: null,
+        usernameOfCompetitor2: 'messi228mmmmmmm',
+        stage: '1/4',
+        result: 'messi228mmmmmmm autowin'
     },
     {
-        username: 'Dizzy',
-        isOut: true,
-        stage: '1/4'
-    },
-    {
-        username: 'Maessy',
-        isOut: false,
-        stage: '1/2'
-    },
-    {
-        username: 'Menet',
-        isOut: false,
-        stage: '1/2'
-    },
-    {
-        username: 'Greedy',
-        isOut: true,
-        stage: '1/4'
-    },
-    {
-        username: 'asdt',
-        isOut: true,
-        stage: '1/4'
-    },
-    {
-        username: 'Maessy',
-        isOut: false,
-        stage: '1/2'
-    },
-    {
-        username: 'Menet',
-        isOut: false,
-        stage: '1/2'
-    },
-    {
-        username: 'Greedy',
-        isOut: true,
-        stage: '1/4'
-    },
-    {
-        username: 'Dizzy',
-        isOut: true,
-        stage: '1/4'
-    },
-    {
-        username: 'Dizzy',
-        isOut: true,
-        stage: 'final'
+        usernameOfCompetitor1: 'madaradanze',
+        usernameOfCompetitor2: 'gigi',
+        stage: '1/4',
+        result: 'gigi win'
     },
 
 ];
+
+const findUsernameOfContestant = (username) => {
+    return username ? username : '—';
+}
 
 export default function RoundsUser() {
 
@@ -92,8 +57,11 @@ export default function RoundsUser() {
     //different sorting cases
     const sortMethods = {
         none: { method: () => null },
-        username_asc: { method: (a, b) => a.username.localeCompare(b.username) },
-        username_desc: { method: (a, b) => b.username.localeCompare(a.username) },
+        contestant1_asc: { method: (a, b) => findUsernameOfContestant(a.usernameOfCompetitor1).localeCompare(findUsernameOfContestant(b.usernameOfCompetitor1)) },
+        contestant1_desc: { method: (a, b) => findUsernameOfContestant(b.usernameOfCompetitor1).localeCompare(findUsernameOfContestant(a.usernameOfCompetitor1)) },
+
+        contestant2_asc: { method: (a, b) => findUsernameOfContestant(a.usernameOfCompetitor2).localeCompare(findUsernameOfContestant(b.usernameOfCompetitor2)) },
+        contestant2_desc: { method: (a, b) => findUsernameOfContestant(b.usernameOfCompetitor2).localeCompare(findUsernameOfContestant(a.usernameOfCompetitor2)) },
 
         //special case for sorting final, also sorting backwards, as 1/2 is logically higher than 1/4, etc.
         stage_asc: {
@@ -108,11 +76,11 @@ export default function RoundsUser() {
                 return a.stage.localeCompare(b.stage);
             }
         },
-        status_asc: { method: (a, b) => a.isOut - b.isOut },
-        status_desc: { method: (a, b) => b.isOut - a.isOut }
+        result_asc: { method: (a, b) => a.result.localeCompare(b.result) },
+        result_desc: { method: (a, b) => b.result.localeCompare(a.result) }
     }
 
-    const filteredCompetitors = competitors.sort(sortMethods[sortState].method);
+    const filteredRounds = rounds.sort(sortMethods[sortState].method);
 
     return (
         <Box sx={{ mt: 5 }} width='100%' display='flex' flexDirection='column' justifyContent='center' alignItems='center' height='90%' >
@@ -120,7 +88,7 @@ export default function RoundsUser() {
                 Rounds
             </Typography>
             <List
-                sx={{ width: '70%', maxHeight: '65%', overflow: 'auto' }}
+                sx={{ width: '85%', maxHeight: '65%', overflow: 'auto' }}
                 subheader={
                     <ListSubheader
                         color='secondary'
@@ -135,7 +103,7 @@ export default function RoundsUser() {
                             justifyContent: 'space-between'
                         }}
                     >
-                        <Box display='flex' flexDirection='row' sx={{ flex: 1 }} alignItems='center'>
+                        <Box display='flex' flexDirection='row' sx={{ flex: 2 }} alignItems='center'>
                             <Typography
                                 align='left'
                                 fontWeight={900}
@@ -148,39 +116,53 @@ export default function RoundsUser() {
                             {sortState === 'stage_asc' && <NorthIcon fontSize='small' />}
                             {sortState === 'stage_desc' && <SouthIcon fontSize='small' />}
                         </Box>
-                        <Box display='flex' flexDirection='row' sx={{ flex: 5 }} justifyContent='center' alignItems='center'>
+                        <Box display='flex' flexDirection='row' sx={{ flex: 3 }} justifyContent='center' alignItems='center'>
                             <Typography
                                 align='center'
                                 fontWeight={900}
                                 fontSize={20}
                                 sx={{ '&:hover': { cursor: 'pointer' }, }}
-                                onClick={() => sortState === 'username_asc' ? setSortState('username_desc') : sortState === 'username_desc' ? setSortState('none') : setSortState('username_asc')}
+                                onClick={() => sortState === 'contestant1_asc' ? setSortState('contestant1_desc') : sortState === 'contestant1_desc' ? setSortState('none') : setSortState('contestant1_asc')}
                             >
-                                Username
+                                Contestant 1
                             </Typography>
-                            {sortState === 'username_asc' && <NorthIcon fontSize='small' />}
-                            {sortState === 'username_desc' && <SouthIcon fontSize='small' />}
+                            {sortState === 'contestant1_asc' && <NorthIcon fontSize='small' />}
+                            {sortState === 'contestant1_desc' && <SouthIcon fontSize='small' />}
                         </Box>
-                        <Box display='flex' flexDirection='row' sx={{ flex: 1 }} justifyContent='flex-end' alignItems='center'>
-                            {sortState === 'status_asc' && <NorthIcon fontSize='small' />}
-                            {sortState === 'status_desc' && <SouthIcon fontSize='small' />}
+                        <Box display='flex' flexDirection='row' sx={{ flex: 3 }} justifyContent='center' alignItems='center'>
+                            {sortState === 'contestant2_asc' && <NorthIcon fontSize='small' />}
+                            {sortState === 'contestant2_desc' && <SouthIcon fontSize='small' />}
+                            <Typography
+                                align='center'
+                                fontWeight={900}
+                                fontSize={20}
+                                sx={{ '&:hover': { cursor: 'pointer' }, }}
+                                onClick={() => sortState === 'contestant2_asc' ? setSortState('contestant2_desc') : sortState === 'contestant2_desc' ? setSortState('none') : setSortState('contestant2_asc')}
+                            >
+                                Contestant 2
+                            </Typography>
+                        </Box>
+                        <Box display='flex' flexDirection='row' sx={{ flex: 2 }} justifyContent='flex-end' alignItems='center'>
+                            {sortState === 'result_asc' && <NorthIcon fontSize='small' />}
+                            {sortState === 'result_desc' && <SouthIcon fontSize='small' />}
                             <Typography
                                 align='right'
                                 fontWeight={900}
                                 fontSize={20}
                                 sx={{ '&:hover': { cursor: 'pointer' }, }}
-                                onClick={() => sortState === 'status_asc' ? setSortState('status_desc') : sortState === 'status_desc' ? setSortState('none') : setSortState('status_asc')}
+                                onClick={() => sortState === 'result_asc' ? setSortState('result_desc') : sortState === 'result_desc' ? setSortState('none') : setSortState('result_asc')}
                             >
-                                Status
+                                Result
                             </Typography>
                         </Box>
                     </ListSubheader>}
             >
-                {filteredCompetitors.map((competitor, index) => (
+                {filteredRounds.map((round, index) => (
                     <Card key={index} sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', py: '2%', px: '3%', m: '1%' }}>
-                        <Typography align='left' sx={{ flex: 1 }}>{competitor.stage} </Typography>
-                        <Typography align='center' sx={{ flex: 5 }}>{competitor.username} </Typography>
-                        <Typography align='right' sx={{ flex: 1 }}>{competitor.isOut ? 'Out' : 'In'} </Typography>
+                        <Typography align='left' sx={{ flex: 2 }}>{round.stage} </Typography>
+                        <Typography align='center' sx={{ flex: 3 }}>{findUsernameOfContestant(round.usernameOfCompetitor1)} </Typography>
+                        <Typography align='center' sx={{ flex: 3 }}>{findUsernameOfContestant(round.usernameOfCompetitor2)} </Typography>
+                        <Typography align='right' sx={{ flex: 2 }}>{round.result} </Typography>
                     </Card>
                 ))}
             </List>
