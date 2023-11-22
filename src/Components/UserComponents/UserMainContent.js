@@ -2,7 +2,7 @@ import { Box, Button } from "@mui/material";
 import { useState } from "react";
 
 export default function UserMainContent() {
-    const [isBracketMade, setIsBracketMade] = useState(true);
+    const [roundsQuantity, setRoundsQuantity] = useState(2);
 
     return (
         <Box display='flex' flexDirection='column' gap={10} width="100%">
@@ -14,7 +14,7 @@ export default function UserMainContent() {
                     Personal page
                 </Button>
             </Box>
-            {isBracketMade && <Box display="flex" justifyContent="space-around" width="100%">
+            {roundsQuantity !== 0 && <Box display="flex" justifyContent="space-around" width="100%">
                 <Button sx={{ transition: '0.35s', "&:hover": { backgroundColor: '#b4b4b4' } }} variant="outlined" color="secondary">
                     Rounds
                 </Button>

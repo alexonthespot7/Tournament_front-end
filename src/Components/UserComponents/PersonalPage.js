@@ -8,7 +8,7 @@ const personalInfo = {
     email: 'shevelenkov.aa@edu.spbstu.ru',
     isOut: false,
     stage: '1/2',
-    isCompetitor: 'true',
+    isCompetitor: true,
     roundsQuantity: 2,
     publicRounds: [
         {
@@ -134,7 +134,7 @@ export default function PersonalPage() {
                 {personalInfo.publicRounds.map((round, index) => (
                     <Card key={index} sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', py: '2%', px: '3%', m: '1%' }}>
                         <Typography align='left' sx={{ flex: 1 }}>{round.stage} </Typography>
-                        <Typography align='center' sx={{ flex: 5 }}>{round.usernameOfCompetitor1 === personalInfo.username ? round.usernameOfCompetitor1 : round.usernameOfCompetitor2} </Typography>
+                        <Typography align='center' sx={{ flex: 5 }}>{round.usernameOfCompetitor1 === personalInfo.username ? round.usernameOfCompetitor2 : round.usernameOfCompetitor1} </Typography>
                         <Typography align='right' sx={{ flex: 1 }}>{round.result} </Typography>
                     </Card>
                 ))}
