@@ -45,7 +45,7 @@ const rounds = [
 
 ];
 
-const findUsernameOfContestant = (username) => {
+export const findUsernameOfContestant = (username) => {
     return username ? username : '—';
 }
 
