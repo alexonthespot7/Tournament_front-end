@@ -42,7 +42,7 @@ function App() {
           <div className='thin-line right-top second' style={{ marginLeft: -25, marginTop: 20 }}></div>
           <div className='thin-line right-top' style={{ marginLeft: -50, marginTop: 20 }}></div>
         </Stack>
-        <Bracket />
+        <Signup />
       </div>
     </div>
   );

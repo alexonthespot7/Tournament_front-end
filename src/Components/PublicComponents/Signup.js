@@ -1,10 +1,17 @@
-import { Box, Button, IconButton, InputAdornment, OutlinedInput, TextField, Typography } from "@mui/material";
+import { Box, Button, MenuItem, TextField, Typography } from "@mui/material";
 
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useState } from "react";
 
 export default function Signup() {
+
+    const [roundsQuantity, setRoundsQuantity] = useState(0);
+    const [signupForm, setSignupForm] = useState({
+        isCompetitor: false,
+        username: '',
+        email: '',
+        password: ''
+    });
+    const [repeatPassword, setRepeatPassword] = useState('');
 
     return (
         <Box sx={{ mt: 22, mb: 6 }} display='flex' flexDirection='column' alignItems='center' justifyContent='flex-start' height='100%' width='45%'>
@@ -16,6 +23,10 @@ export default function Signup() {
                 <TextField error={false} helperText='' variant="outlined" label='Email' />
                 <TextField error={false} helperText='' variant="outlined" type='password' label='Password' />
                 <TextField error={false} helperText='' variant="outlined" type='password' label='Repeat password' />
+                {roundsQuantity === 0 && <TextField select value={signupForm.isCompetitor} error={false} helperText='' variant="outlined" label='Participant?'>
+                    <MenuItem value={false}>No</MenuItem>
+                    <MenuItem value={true}>Yes</MenuItem>
+                </TextField>}
                 <Button variant="contained" color="secondary" style={{ width: '100%' }}>
                     Sign-up
                 </Button>
