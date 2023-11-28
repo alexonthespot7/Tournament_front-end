@@ -10,6 +10,9 @@ import Competitors from './Components/UserComponents/Competitors';
 import PersonalPage from './Components/UserComponents/PersonalPage';
 import RoundsUser from './Components/UserComponents/RoundsUser';
 import Bracket from './Components/UserComponents/Bracket';
+import RoundsAdmin from './Components/AdminComponents/RoundsAdmin';
+import Stages from './Components/AdminComponents/Stages';
+import Users from './Components/AdminComponents/Users';
 
 function App() {
   const { windowSize } = useContext(ContextWrapper);
@@ -42,7 +45,7 @@ function App() {
           <div className='thin-line right-top second' style={{ marginLeft: -25, marginTop: 20 }}></div>
           <div className='thin-line right-top' style={{ marginLeft: -50, marginTop: 20 }}></div>
         </Stack>
-        <Signup />
+        <Login />
       </div>
     </div>
   );

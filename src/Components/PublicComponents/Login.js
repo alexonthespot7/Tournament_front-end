@@ -18,7 +18,6 @@ export default function Login() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '35%', textAlign: 'start' }}>
                 <Typography>Username:</Typography>
                 <TextField variant="outlined" placeholder="Enter your username" />
-
                 <Typography>Password:</Typography>
                 <OutlinedInput
                     sx={{ mb: 2 }}

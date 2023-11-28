@@ -42,7 +42,6 @@ const rounds = [
         stage: '1/4',
         result: 'gigi win'
     },
-
 ];
 
 export const findUsernameOfContestant = (username) => {
