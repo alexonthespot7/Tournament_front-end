@@ -14,6 +14,8 @@ import RoundsAdmin from './Components/AdminComponents/RoundsAdmin';
 import Stages from './Components/AdminComponents/Stages';
 import Users from './Components/AdminComponents/Users';
 
+
+
 function App() {
   const { windowSize } = useContext(ContextWrapper);
 
@@ -47,6 +49,7 @@ function App() {
         </Stack>
         <Login />
       </div>
+
     </div>
   );
 }

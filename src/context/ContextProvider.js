@@ -1,6 +1,13 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 
 import ContextWrapper from "./ContextWrapper";
+
+import MuiAlert from '@mui/material/Alert';
+import { Snackbar } from "@mui/material";
+
+const Alert = forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function ContextProvider(props) {
     const [windowSize, setWindowSize] = useState({
@@ -8,13 +15,17 @@ function ContextProvider(props) {
         height: window.innerHeight,
     });
 
+    const [alertText, setAlertText] = useState('');
+    const [alertColor, setAlertColor] = useState('secondary');
+    const [alertOpen, setAlertOpen] = useState(false);
+
     // Function to update window size state
     const updateWindowSize = () => {
         setWindowSize({
             width: window.innerWidth,
             height: window.innerHeight,
         });
-    };
+    }
 
     useEffect(() => {
         // Event listener for window resize
@@ -29,12 +40,25 @@ function ContextProvider(props) {
     return (
         <ContextWrapper.Provider
             value={{
-                windowSize
+                windowSize, setAlertText, setAlertColor, setAlertOpen
             }}
         >
             {props.children}
+            <Snackbar
+                open={alertOpen}
+                autoHideDuration={3000}
+                onClose={() => setAlertOpen(false)}
+            >
+                <Alert
+                    onClose={() => setAlertOpen(false)}
+                    severity={alertColor}
+                    sx={{ width: '100%' }}
+                >
+                    {alertText}
+                </Alert>
+            </Snackbar>
         </ContextWrapper.Provider>
     );
-};
+}
 
 export default ContextProvider;
