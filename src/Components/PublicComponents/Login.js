@@ -13,12 +13,21 @@ const initialCredentials = {
     password: ''
 }
 
+const coefficient = 1000000;
+const baseWidthPercentage = 18;
+
 export default function Login() {
     const [loading, setLoading] = useState(false);
     const [credentials, setCredentials] = useState(initialCredentials);
     const [showPassword, setShowPassword] = useState(false);
 
     const { windowSize, setAlertText, setAlertColor, setAlertOpen } = useContext(ContextWrapper);
+
+    // The size variables for responsiveness of the page
+    const isNormalSize = (windowSize.width > 900 && windowSize.height > 475);
+    const headerVariant = isNormalSize ? 'h4' : 'h5';
+    const boxWidthPercentage = `${coefficient / Math.pow(windowSize.width, 1.7) + baseWidthPercentage}%`;
+    const size = isNormalSize ? 'medium' : 'small';
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -28,7 +37,6 @@ export default function Login() {
 
     const login = async () => {
         setLoading(true);
-        console.log(process.env.REACT_APP_API_URL);
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
                 method: 'POST',
@@ -55,38 +63,54 @@ export default function Login() {
             } else {
                 setLoading(false);
                 setAlertOpen(true);
-                setAlertText(response.statusText);
+                setAlertColor('error');
+                setAlertText((await response.text()).toString());
             }
         } catch (error) {
-            console.error(error);
             setAlertOpen(true);
+            setAlertColor('error');
             setAlertText('Can\'t reach the server at the moment');
+        }
+    }
+
+    const performLogin = () => {
+        if (credentials.username === '') {
+            setAlertOpen(true);
+            setAlertText('Please provide username or email');
+            setAlertColor('secondary');
+        } else if (credentials.password === '') {
+            setAlertOpen(true);
+            setAlertText('Please provide password');
+            setAlertColor('secondary');
+        } else {
+            login();
         }
     }
 
     return (
         <Box
-            sx={{ mt: 20, mb: 6 }}
+            sx={{ mt: '5%' }}
             display='flex'
             flexDirection='column'
             alignItems='center'
             justifyContent='center'
             height='100%'
-            width='45%'
+            width='100%'
         >
-            <Typography variant="h4" sx={{ mb: 6 }}>
+            <Typography variant={headerVariant} sx={{ mb: '1.5%' }}>
                 Login
             </Typography>
             {!loading &&
                 <Box
                     display='flex'
                     flexDirection='column'
-                    gap={2}
-                    width='35%'
+                    gap={windowSize.height / 400}
+                    width={boxWidthPercentage}
                     sx={{ textAlign: 'start' }}
                 >
                     <Typography>Username:</Typography>
                     <TextField
+                        size={size}
                         color='secondary'
                         variant='outlined'
                         placeholder='Username'
@@ -96,8 +120,9 @@ export default function Login() {
                     />
                     <Typography>Password:</Typography>
                     <OutlinedInput
+                        size={size}
                         color='secondary'
-                        sx={{ mb: 2 }}
+                        sx={{ mb: '6%' }}
                         placeholder='Password'
                         type={showPassword ? 'text' : 'password'}
                         endAdornment={
@@ -116,9 +141,10 @@ export default function Login() {
                         onChange={inputChanged}
                     />
                     <Button
+                        size={size}
                         variant='contained'
                         color='secondary'
-                        onClick={login}
+                        onClick={performLogin}
                     >
                         Login
                     </Button>
@@ -126,10 +152,18 @@ export default function Login() {
                         display='flex'
                         justifyContent='space-between'
                     >
-                        <Button variant='text' color='secondary'>
+                        <Button
+                            size={size}
+                            variant='text'
+                            color='secondary'
+                        >
                             Sign Up
                         </Button>
-                        <Button variant='text' color='secondary'>
+                        <Button
+                            size={size}
+                            variant='text'
+                            color='secondary'
+                        >
                             Forgot Password?
                         </Button>
                     </Box>
