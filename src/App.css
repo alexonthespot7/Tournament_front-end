@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: #eaeaea;
+  background: conic-gradient(from 45deg, #eaeaea, #f4f4f4);
   color: #121212;
   height: 100vh;
   font-family: 'Lato', sans-serif;

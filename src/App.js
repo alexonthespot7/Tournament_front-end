@@ -21,13 +21,13 @@ function App() {
 
   return (
     <div className="App">
-      <AppBar position='fixed' sx={{ backgroundColor: '#E2E2E2', boxShadow: 7 }}>
+      <AppBar position='fixed' sx={{ background: 'linear-gradient(to right, #E2E2E2 0%, #f4f4f4 50%, #E2E2E2 100%)', boxShadow: 7 }}>
         <Toolbar sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
           <img src={logo_transparent} width={165 + windowSize.width / 28} height='auto' alt='Logo' />
         </Toolbar>
       </AppBar>
       <div className="App-header">
-        <Competitors />
+        <PersonalPage />
       </div>
 
     </div>

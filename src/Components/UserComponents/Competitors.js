@@ -40,9 +40,7 @@ export default function Competitors() {
     //state for sort handling
     const [sortState, setSortState] = useState('none');
 
-    const {
-        windowSize, makeErrorAlert, headerVariant, isNormalSize
-    } = useContext(ContextWrapper);
+    const { windowSize, makeErrorAlert, headerVariant, isNormalSize, deleteCookies } = useContext(ContextWrapper);
 
     // Variables for making size responsible, depending on the screen size;
     const listHeadersSize = isNormalSize ? 20 : 17;
@@ -75,10 +73,7 @@ export default function Competitors() {
             });
             if (!response.ok) {
                 if (response.status === 401) {
-                    Cookies.remove('jwt');
-                    Cookies.remove('role');
-                    Cookies.remove('userId');
-                    Cookies.remove('username');
+                    deleteCookies();
                     makeErrorAlert('Your session has expired, login again please');
                 } else {
                     makeErrorAlert(await response.text())

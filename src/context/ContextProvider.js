@@ -4,6 +4,7 @@ import ContextWrapper from "./ContextWrapper";
 
 import MuiAlert from '@mui/material/Alert';
 import { Snackbar } from "@mui/material";
+import Cookies from "js-cookie";
 
 const Alert = forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -65,13 +66,19 @@ function ContextProvider(props) {
     const headerVariant = isNormalSize ? 'h4' : 'h5';
     const size = isNormalSize ? 'medium' : 'small';
 
+    const deleteCookies = () => {
+        Cookies.remove('jwt');
+        Cookies.remove('role');
+        Cookies.remove('userId');
+        Cookies.remove('username');
+    }
 
     return (
         <ContextWrapper.Provider
             value={{
                 windowSize, makeErrorAlert, makeBlackAlert,
                 makeWarningAlert, makeSuccessAlert, headerVariant,
-                size, isNormalSize
+                size, isNormalSize, deleteCookies
             }}
         >
             {props.children}
