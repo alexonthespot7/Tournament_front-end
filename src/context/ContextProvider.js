@@ -19,6 +19,28 @@ function ContextProvider(props) {
     const [alertColor, setAlertColor] = useState('secondary');
     const [alertOpen, setAlertOpen] = useState(false);
 
+    const invokeAlert = (text, color) => {
+        setAlertOpen(true);
+        setAlertColor(color);
+        setAlertText(text);
+    }
+
+    const makeErrorAlert = (text) => {
+        invokeAlert(text, 'error');
+    }
+
+    const makeBlackAlert = (text) => {
+        invokeAlert(text, 'secondary');
+    }
+
+    const makeWarningAlert = (text) => {
+        invokeAlert(text, 'warning');
+    }
+
+    const makeSuccessAlert = (text) => {
+        invokeAlert(text, 'success');
+    }
+
     // Function to update window size state
     const updateWindowSize = () => {
         setWindowSize({
@@ -40,7 +62,7 @@ function ContextProvider(props) {
     return (
         <ContextWrapper.Provider
             value={{
-                windowSize, setAlertText, setAlertColor, setAlertOpen
+                windowSize, makeErrorAlert, makeBlackAlert, makeWarningAlert, makeSuccessAlert
             }}
         >
             {props.children}

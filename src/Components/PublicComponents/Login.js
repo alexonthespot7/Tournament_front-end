@@ -6,6 +6,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import Cookies from 'js-cookie';
+
 import ContextWrapper from '../../context/ContextWrapper';
 
 const initialCredentials = {
@@ -21,7 +22,7 @@ export default function Login() {
     const [credentials, setCredentials] = useState(initialCredentials);
     const [showPassword, setShowPassword] = useState(false);
 
-    const { windowSize, setAlertText, setAlertColor, setAlertOpen } = useContext(ContextWrapper);
+    const { windowSize, makeErrorAlert, makeBlackAlert, makeSuccessAlert } = useContext(ContextWrapper);
 
     // The size variables for responsiveness of the page
     const isNormalSize = (windowSize.width > 900 && windowSize.height > 475);
@@ -57,31 +58,21 @@ export default function Login() {
                 setCredentials(initialCredentials);
 
                 setLoading(false);
-                setAlertOpen(true);
-                setAlertColor('success');
-                setAlertText('Login process was successful');
+                makeSuccessAlert('Login process was successful');
             } else {
                 setLoading(false);
-                setAlertOpen(true);
-                setAlertColor('error');
-                setAlertText((await response.text()).toString());
+                makeErrorAlert((await response.text()).toString());
             }
         } catch (error) {
-            setAlertOpen(true);
-            setAlertColor('error');
-            setAlertText('Can\'t reach the server at the moment');
+            makeErrorAlert('Can\'t reach the server at the moment');
         }
     }
 
     const performLogin = () => {
         if (credentials.username === '') {
-            setAlertOpen(true);
-            setAlertText('Please provide username or email');
-            setAlertColor('secondary');
+            makeBlackAlert('Please provide username or email');
         } else if (credentials.password === '') {
-            setAlertOpen(true);
-            setAlertText('Please provide password');
-            setAlertColor('secondary');
+            makeBlackAlert('Please provide password');
         } else {
             login();
         }

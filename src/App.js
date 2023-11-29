@@ -27,27 +27,7 @@ function App() {
         </Toolbar>
       </AppBar>
       <div className="App-header">
-        <Stack sx={{ position: 'absolute', left: 10, top: 125 }} spacing={4}>
-          <div className='thin-line left-top'></div>
-          <div className='thin-line left-top second' style={{ marginLeft: 25, marginTop: 15 }}></div>
-          <div className='thin-line left-top third' style={{ marginLeft: 50, marginTop: 15 }}></div>
-        </Stack>
-        <Stack sx={{ position: 'absolute', right: 10, top: 125 }} spacing={4}>
-          <div className='thin-line right-top'></div>
-          <div className='thin-line right-top second' style={{ marginLeft: -10, marginTop: 20 }}></div>
-          <div className='thin-line right-top third' style={{ marginLeft: -20, marginTop: 20 }}></div>
-        </Stack>
-        <Stack sx={{ position: 'absolute', right: 10, bottom: 60 }} spacing={4}>
-          <div className='thin-line left-top third'></div>
-          <div className='thin-line left-top second' style={{ marginLeft: 10, marginTop: 20 }}></div>
-          <div className='thin-line left-top' style={{ marginLeft: 20, marginTop: 20 }}></div>
-        </Stack>
-        <Stack sx={{ position: 'absolute', left: 60, bottom: 60 }} spacing={4}>
-          <div className='thin-line right-top third'></div>
-          <div className='thin-line right-top second' style={{ marginLeft: -25, marginTop: 20 }}></div>
-          <div className='thin-line right-top' style={{ marginLeft: -50, marginTop: 20 }}></div>
-        </Stack>
-        <Login />
+        <Signup />
       </div>
 
     </div>
