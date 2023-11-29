@@ -1,7 +1,8 @@
-import { Box, Button, CircularProgress, MenuItem, TextField, Typography } from "@mui/material";
+import { useContext, useEffect, useState } from 'react';
 
-import { useContext, useEffect, useState } from "react";
-import ContextWrapper from "../../context/ContextWrapper";
+import { Box, Button, CircularProgress, MenuItem, TextField, Typography } from '@mui/material';
+
+import ContextWrapper from '../../context/ContextWrapper';
 
 const initialSignupForm = {
     isCompetitor: false,
@@ -19,13 +20,14 @@ export default function Signup() {
     const [signupForm, setSignupForm] = useState(initialSignupForm);
     const [repeatPassword, setRepeatPassword] = useState('');
 
-    const { windowSize, makeErrorAlert, makeBlackAlert, makeSuccessAlert } = useContext(ContextWrapper);
+    const {
+        windowSize, makeErrorAlert, makeBlackAlert,
+        makeSuccessAlert, isNormalSize, headerVariant,
+        size
+    } = useContext(ContextWrapper);
 
     // The size variables for responsiveness of the page
-    const isNormalSize = (windowSize.width > 900 && windowSize.height > 475);
-    const headerVariant = isNormalSize ? 'h4' : 'h5';
     const boxWidthPercentage = `${coefficient / Math.pow(windowSize.width, 1.9) + baseWidthPercentage}%`;
-    const size = isNormalSize ? 'medium' : 'small';
     const gap = isNormalSize ? windowSize.height / 400 : windowSize.height / 350;
 
     useEffect(() => {
@@ -39,7 +41,7 @@ export default function Signup() {
                 makeErrorAlert('Something is wrong with the server');
                 return null;
             }
-            setRoundsQuantity((await response.text()));
+            setRoundsQuantity(await response.text());
             setLoading(false);
         } catch (error) {
             makeErrorAlert('Something is wrong with the server');
@@ -123,6 +125,10 @@ export default function Signup() {
                                 color='secondary'
                                 size='small'
                                 onClick={performSignup}
+                                sx={{
+                                    transition: '0.35s',
+                                    '&:hover': { backgroundColor: '#b4b4b4' }
+                                }}
                             >
                                 Sign-up
                             </Button>
@@ -198,7 +204,11 @@ export default function Signup() {
                                 onClick={performSignup}
                                 variant='contained'
                                 color='secondary'
-                                sx={{ width: '100%' }}
+                                sx={{
+                                    width: '100%',
+                                    transition: '0.35s',
+                                    '&:hover': { backgroundColor: '#555555' }
+                                }}
                             >
                                 Sign-up
                             </Button>

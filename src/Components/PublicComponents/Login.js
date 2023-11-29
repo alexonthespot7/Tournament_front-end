@@ -22,13 +22,13 @@ export default function Login() {
     const [credentials, setCredentials] = useState(initialCredentials);
     const [showPassword, setShowPassword] = useState(false);
 
-    const { windowSize, makeErrorAlert, makeBlackAlert, makeSuccessAlert } = useContext(ContextWrapper);
+    const {
+        windowSize, makeErrorAlert, makeBlackAlert,
+        makeSuccessAlert, headerVariant, size
+    } = useContext(ContextWrapper);
 
     // The size variables for responsiveness of the page
-    const isNormalSize = (windowSize.width > 900 && windowSize.height > 475);
-    const headerVariant = isNormalSize ? 'h4' : 'h5';
     const boxWidthPercentage = `${coefficient / Math.pow(windowSize.width, 1.7) + baseWidthPercentage}%`;
-    const size = isNormalSize ? 'medium' : 'small';
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -136,6 +136,10 @@ export default function Login() {
                         variant='contained'
                         color='secondary'
                         onClick={performLogin}
+                        sx={{
+                            transition: '0.35s',
+                            '&:hover': { backgroundColor: '#555555' }
+                        }}
                     >
                         Login
                     </Button>

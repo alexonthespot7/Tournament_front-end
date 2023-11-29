@@ -59,10 +59,19 @@ function ContextProvider(props) {
         };
     }, []); // Empty dependency array ensures this effect runs only once
 
+    //the variable will be used for conditional rendering to make design responsive
+    const isNormalSize = (windowSize.width > 900 && windowSize.height > 475);
+
+    const headerVariant = isNormalSize ? 'h4' : 'h5';
+    const size = isNormalSize ? 'medium' : 'small';
+
+
     return (
         <ContextWrapper.Provider
             value={{
-                windowSize, makeErrorAlert, makeBlackAlert, makeWarningAlert, makeSuccessAlert
+                windowSize, makeErrorAlert, makeBlackAlert,
+                makeWarningAlert, makeSuccessAlert, headerVariant,
+                size, isNormalSize
             }}
         >
             {props.children}
