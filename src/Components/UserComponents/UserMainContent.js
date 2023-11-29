@@ -46,7 +46,7 @@ export default function UserMainContent() {
                     Competitors
                 </Button>
             );
-        } else {
+        } else if (roundsQuantity > 0) {
             return (
                 <Button
                     size={size}
@@ -58,6 +58,20 @@ export default function UserMainContent() {
                     color='secondary'
                 >
                     Rounds
+                </Button>
+            );
+        } else {
+            return (
+                <Button
+                    size={size}
+                    sx={{
+                        transition: '0.35s',
+                        '&:hover': { backgroundColor: '#555555' }
+                    }}
+                    variant='contained'
+                    color='secondary'
+                >
+                    Users
                 </Button>
             );
         }
