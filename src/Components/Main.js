@@ -1,4 +1,7 @@
-import { Box, Button, Container, Grid, IconButton, Stack, Typography } from '@mui/material';
+import { useContext } from 'react';
+
+import { Box, IconButton, Typography } from '@mui/material';
+
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import WebAssetIcon from '@mui/icons-material/WebAsset';
@@ -7,7 +10,6 @@ import Cookies from 'js-cookie';
 
 import PublicMainContent from './PublicComponents/PublicMainContent';
 import UserMainContent from './UserComponents/UserMainContent';
-import { useContext } from 'react';
 import ContextWrapper from '../context/ContextWrapper';
 
 

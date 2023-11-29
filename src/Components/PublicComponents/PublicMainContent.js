@@ -1,5 +1,7 @@
 import { useContext } from 'react';
+
 import { Box, Button } from '@mui/material';
+
 import ContextWrapper from '../../context/ContextWrapper';
 
 export default function PublicMainContent() {
