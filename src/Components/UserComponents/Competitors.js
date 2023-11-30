@@ -29,8 +29,8 @@ const sortMethods = {
             return a.stage.localeCompare(b.stage);
         }
     },
-    status_asc: { method: (a, b) => a.isOut - b.isOut },
-    status_desc: { method: (a, b) => b.isOut - a.isOut }
+    status_asc: { method: (a, b) => a.out - b.out },
+    status_desc: { method: (a, b) => b.out - a.out }
 }
 
 export default function Competitors() {
@@ -40,7 +40,7 @@ export default function Competitors() {
     //state for sort handling
     const [sortState, setSortState] = useState('none');
 
-    const { windowSize, makeErrorAlert, headerVariant, isNormalSize, deleteCookies } = useContext(ContextWrapper);
+    const { windowSize, makeErrorAlert, headerVariant, size, isNormalSize, deleteCookies } = useContext(ContextWrapper);
 
     // Variables for making size responsible, depending on the screen size;
     const listHeadersSize = isNormalSize ? 20 : 17;
@@ -230,7 +230,7 @@ export default function Competitors() {
                                     align='right'
                                     sx={{ flex: 1 }}
                                 >
-                                    {competitor.isOut ? 'Out' : 'In'}
+                                    {competitor.out ? 'Out' : 'In'}
                                 </Typography>
                             </Card>
                         ))}
