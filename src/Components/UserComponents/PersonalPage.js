@@ -11,6 +11,7 @@ import SouthIcon from '@mui/icons-material/South';
 import Cookies from 'js-cookie';
 
 import ContextWrapper from '../../context/ContextWrapper';
+import ChangePassword from './ChangePassword';
 
 const initialPersonalInfo = {
     username: '',
@@ -483,21 +484,7 @@ export default function PersonalPage() {
                                 </Card>
                             ))}
                         </List>}
-                    <Button
-                        color='secondary'
-                        size={size}
-                        variant='outlined'
-                        sx={{
-                            boxShadow: 8,
-                            position: 'fixed',
-                            right: '3%',
-                            bottom: '4%',
-                            transition: '0.35s',
-                            '&:hover': { backgroundColor: '#b4b4b4' }
-                        }}
-                    >
-                        Change password
-                    </Button>
+                    <ChangePassword />
                 </>
             }
             {loading && <CircularProgress color='secondary' />}
