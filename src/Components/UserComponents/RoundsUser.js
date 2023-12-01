@@ -1,57 +1,68 @@
+import { useContext, useEffect, useState } from 'react';
+
+import { Box, Card, CircularProgress, List, ListSubheader, Typography } from '@mui/material';
 
 import NorthIcon from '@mui/icons-material/North';
 import SouthIcon from '@mui/icons-material/South';
-import { Box, Card, IconButton, List, ListItem, ListItemText, ListSubheader, Typography } from '@mui/material';
-import { useState } from 'react';
 
+import Cookies from 'js-cookie';
 
-const rounds = [
-    {
-        usernameOfCompetitor1: 'Alex',
-        usernameOfCompetitor2: 'messi22822',
-        stage: '1/2',
-        result: 'Alex win'
-    },
-    {
-        usernameOfCompetitor1: 'ferz',
-        usernameOfCompetitor2: 'gigi',
-        stage: '1/2',
-        result: 'ferz win'
-    },
-    {
-        usernameOfCompetitor1: 'Alex',
-        usernameOfCompetitor2: 'shoes',
-        stage: '1/4',
-        result: 'Alex win'
-    },
-    {
-        usernameOfCompetitor1: 'ferz',
-        usernameOfCompetitor2: 'griixy',
-        stage: '1/4',
-        result: 'ferz win'
-    },
-    {
-        usernameOfCompetitor1: null,
-        usernameOfCompetitor2: 'messi228mmmmmmm',
-        stage: '1/4',
-        result: 'messi228mmmmmmm autowin'
-    },
-    {
-        usernameOfCompetitor1: 'madaradanze',
-        usernameOfCompetitor2: 'gigi',
-        stage: '1/4',
-        result: 'gigi win'
-    },
-];
+import ContextWrapper from '../../context/ContextWrapper';
 
 export const findUsernameOfContestant = (username) => {
     return username ? username : '—';
 }
 
 export default function RoundsUser() {
+    const [loading, setLoading] = useState(true);
+    const [rounds, setRounds] = useState([]);
 
     //state for sort handling
     const [sortState, setSortState] = useState('none');
+
+    const { windowSize, makeErrorAlert, makeWarningAlert, headerVariant, isNormalSize, deleteCookies } = useContext(ContextWrapper);
+
+    const isMedium = windowSize.width > 650;
+    const isSmall = windowSize.width > 500;
+    const isXSmall = windowSize.width > 400;
+
+    const listHeadersTextSize = isNormalSize ? 20 : isMedium ? 17 : isSmall ? 14 : isXSmall ? 11 : 9;
+    const rowTextSize = isNormalSize ? 16 : isMedium ? 13 : isSmall ? 10 : 7;
+
+    useEffect(() => {
+        fetchRounds();
+    }, []);
+
+    const fetchRounds = async () => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/rounds`, {
+                method: 'GET',
+                headers: { 'Authorization': Cookies.get('jwt') }
+            });
+            if (!response.ok) {
+                if (response.status === 401) {
+                    deleteCookies();
+                    makeErrorAlert('Your session has expired, login again please');
+                } else {
+                    makeErrorAlert(await response.text())
+                }
+                return null;
+            }
+            if (response.status === 202) {
+                //redirect to main page
+                makeWarningAlert('The bracket wasn\'t made yet')
+            } else {
+                response.json()
+                    .then(data => {
+                        setRounds(data);
+                        setLoading(false);
+                    })
+                    .catch(err => makeErrorAlert(err.message));
+            }
+        } catch (error) {
+            makeErrorAlert(error.message);
+        }
+    }
 
     //different sorting cases
     const sortMethods = {
@@ -81,90 +92,180 @@ export default function RoundsUser() {
 
     const filteredRounds = rounds.sort(sortMethods[sortState].method);
 
+    function SortIcon() {
+        if (sortState.includes('_asc')) {
+            return (
+                <NorthIcon fontSize='small' />
+            );
+        } else if (sortState.includes('_desc')) {
+            return (
+                <SouthIcon fontSize='small' />
+            );
+        }
+    }
+
+    const handleSortState = (property) => {
+        sortState.includes('_asc') ? setSortState(`${property}_desc`) : sortState.includes('_desc') ? setSortState('none') : setSortState(`${property}_asc`);
+    }
+
     return (
-        <Box sx={{ mt: 5 }} width='100%' display='flex' flexDirection='column' justifyContent='center' alignItems='center' height='90%' >
-            <Typography variant="h4" sx={{ mb: 2 }}>
-                Rounds
-            </Typography>
-            <List
-                sx={{ width: '85%', maxHeight: '65%', overflow: 'auto' }}
-                subheader={
-                    <ListSubheader
-                        color='secondary'
-                        sx={{
-                            backgroundColor: '#f0f0f0',
-                            boxShadow: 7,
-                            py: '1%',
-                            px: '2%',
-                            m: '1%',
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between'
-                        }}
+        <Box
+            mt='2.5%'
+            width='100%'
+            display='flex'
+            flexDirection='column'
+            justifyContent='center'
+            alignItems='center'
+            height='100%'
+        >
+            {!loading &&
+                <>
+                    <Typography
+                        variant={isMedium ? headerVariant : 'h6'}
+                        sx={{ mb: '1%' }}
                     >
-                        <Box display='flex' flexDirection='row' sx={{ flex: 2 }} alignItems='center'>
-                            <Typography
-                                align='left'
-                                fontWeight={900}
-                                fontSize={20}
-                                sx={{ '&:hover': { cursor: 'pointer' }, }}
-                                onClick={() => sortState === 'stage_asc' ? setSortState('stage_desc') : sortState === 'stage_desc' ? setSortState('none') : setSortState('stage_asc')}
+                        Rounds
+                    </Typography>
+                    <List
+                        sx={{
+                            width: isSmall ? '85%' : '95%',
+                            maxHeight: windowSize.height <= 350 ? '50%' : isSmall ? '65%' : '75%',
+                            overflow: 'auto'
+                        }}
+                        subheader={
+                            <ListSubheader
+                                color='secondary'
+                                sx={{
+                                    backgroundColor: '#f0f0f0',
+                                    boxShadow: 8,
+                                    py: isNormalSize ? '1%' : '1.5%',
+                                    px: isNormalSize ? '2%' : '3%',
+                                    m: isNormalSize ? '1%' : '1.5%',
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between'
+                                }}
                             >
-                                Stage
-                            </Typography>
-                            {sortState === 'stage_asc' && <NorthIcon fontSize='small' />}
-                            {sortState === 'stage_desc' && <SouthIcon fontSize='small' />}
-                        </Box>
-                        <Box display='flex' flexDirection='row' sx={{ flex: 3 }} justifyContent='center' alignItems='center'>
-                            <Typography
-                                align='center'
-                                fontWeight={900}
-                                fontSize={20}
-                                sx={{ '&:hover': { cursor: 'pointer' }, }}
-                                onClick={() => sortState === 'contestant1_asc' ? setSortState('contestant1_desc') : sortState === 'contestant1_desc' ? setSortState('none') : setSortState('contestant1_asc')}
+                                <Box
+                                    display='flex'
+                                    flexDirection='row'
+                                    sx={{ flex: 2 }}
+                                    alignItems='center'
+                                >
+                                    <Typography
+                                        align='left'
+                                        fontWeight={900}
+                                        fontSize={listHeadersTextSize}
+                                        sx={{ '&:hover': { cursor: 'pointer' }, }}
+                                        onClick={() => handleSortState('stage')}
+                                    >
+                                        Stage
+                                    </Typography>
+                                    {sortState.includes('stage') && <SortIcon />}
+                                </Box>
+                                <Box
+                                    display='flex'
+                                    flexDirection='row'
+                                    sx={{ flex: 3 }}
+                                    justifyContent='center'
+                                    alignItems='center'
+                                >
+                                    <Typography
+                                        align='center'
+                                        fontWeight={900}
+                                        fontSize={listHeadersTextSize}
+                                        sx={{ '&:hover': { cursor: 'pointer' }, }}
+                                        onClick={() => handleSortState('contestant1')}
+                                    >
+                                        Contestant 1
+                                    </Typography>
+                                    {sortState.includes('contestant1') && <SortIcon />}
+                                </Box>
+                                <Box
+                                    display='flex'
+                                    flexDirection='row'
+                                    sx={{ flex: 3 }}
+                                    justifyContent='center'
+                                    alignItems='center'
+                                >
+                                    {sortState.includes('contestant2') && <SortIcon />}
+                                    <Typography
+                                        align='center'
+                                        fontWeight={900}
+                                        fontSize={listHeadersTextSize}
+                                        sx={{ '&:hover': { cursor: 'pointer' }, }}
+                                        onClick={() => handleSortState('contestant2')}
+                                    >
+                                        Contestant 2
+                                    </Typography>
+                                </Box>
+                                <Box
+                                    display='flex'
+                                    flexDirection='row'
+                                    sx={{ flex: 2 }}
+                                    justifyContent='flex-end'
+                                    alignItems='center'
+                                >
+                                    {sortState.includes('result') && <SortIcon />}
+                                    <Typography
+                                        align='right'
+                                        fontWeight={900}
+                                        fontSize={listHeadersTextSize}
+                                        sx={{ '&:hover': { cursor: 'pointer' }, }}
+                                        onClick={() => handleSortState('result')}
+                                    >
+                                        Result
+                                    </Typography>
+                                </Box>
+                            </ListSubheader>}
+                    >
+                        {filteredRounds.map((round, index) => (
+                            <Card
+                                key={index}
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    py: isNormalSize ? '2%' : '3%',
+                                    px: isNormalSize ? '3%' : '4.5%',
+                                    m: isNormalSize ? '1%' : '1.5%',
+                                    my: isSmall ? '' : isXSmall ? '1%' : '2.5%'
+                                }}
                             >
-                                Contestant 1
-                            </Typography>
-                            {sortState === 'contestant1_asc' && <NorthIcon fontSize='small' />}
-                            {sortState === 'contestant1_desc' && <SouthIcon fontSize='small' />}
-                        </Box>
-                        <Box display='flex' flexDirection='row' sx={{ flex: 3 }} justifyContent='center' alignItems='center'>
-                            {sortState === 'contestant2_asc' && <NorthIcon fontSize='small' />}
-                            {sortState === 'contestant2_desc' && <SouthIcon fontSize='small' />}
-                            <Typography
-                                align='center'
-                                fontWeight={900}
-                                fontSize={20}
-                                sx={{ '&:hover': { cursor: 'pointer' }, }}
-                                onClick={() => sortState === 'contestant2_asc' ? setSortState('contestant2_desc') : sortState === 'contestant2_desc' ? setSortState('none') : setSortState('contestant2_asc')}
-                            >
-                                Contestant 2
-                            </Typography>
-                        </Box>
-                        <Box display='flex' flexDirection='row' sx={{ flex: 2 }} justifyContent='flex-end' alignItems='center'>
-                            {sortState === 'result_asc' && <NorthIcon fontSize='small' />}
-                            {sortState === 'result_desc' && <SouthIcon fontSize='small' />}
-                            <Typography
-                                align='right'
-                                fontWeight={900}
-                                fontSize={20}
-                                sx={{ '&:hover': { cursor: 'pointer' }, }}
-                                onClick={() => sortState === 'result_asc' ? setSortState('result_desc') : sortState === 'result_desc' ? setSortState('none') : setSortState('result_asc')}
-                            >
-                                Result
-                            </Typography>
-                        </Box>
-                    </ListSubheader>}
-            >
-                {filteredRounds.map((round, index) => (
-                    <Card key={index} sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', py: '2%', px: '3%', m: '1%' }}>
-                        <Typography align='left' sx={{ flex: 2 }}>{round.stage} </Typography>
-                        <Typography align='center' sx={{ flex: 3 }}>{findUsernameOfContestant(round.usernameOfCompetitor1)} </Typography>
-                        <Typography align='center' sx={{ flex: 3 }}>{findUsernameOfContestant(round.usernameOfCompetitor2)} </Typography>
-                        <Typography align='right' sx={{ flex: 2 }}>{round.result} </Typography>
-                    </Card>
-                ))}
-            </List>
+                                <Typography
+                                    fontSize={rowTextSize}
+                                    align='left'
+                                    sx={{ flex: 2 }}
+                                >
+                                    {round.stage}
+                                </Typography>
+                                <Typography
+                                    fontSize={rowTextSize}
+                                    align='center'
+                                    sx={{ flex: 3 }}
+                                >
+                                    {findUsernameOfContestant(round.usernameOfCompetitor1)}
+                                </Typography>
+                                <Typography
+                                    fontSize={rowTextSize}
+                                    align='center'
+                                    sx={{ flex: 3 }}
+                                >
+                                    {findUsernameOfContestant(round.usernameOfCompetitor2)}
+                                </Typography>
+                                <Typography
+                                    fontSize={rowTextSize}
+                                    align='right'
+                                    sx={{ flex: 2 }}
+                                >
+                                    {round.result}
+                                </Typography>
+                            </Card>
+                        ))}
+                    </List>
+                </>
+            }
+            {loading && <CircularProgress color='secondary' />}
         </Box >
     );
 }

@@ -27,7 +27,7 @@ function App() {
         </Toolbar>
       </AppBar>
       <div className="App-header">
-        <PersonalPage />
+        <Bracket />
       </div>
 
     </div>

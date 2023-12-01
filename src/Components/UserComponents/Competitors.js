@@ -40,7 +40,7 @@ export default function Competitors() {
     //state for sort handling
     const [sortState, setSortState] = useState('none');
 
-    const { windowSize, makeErrorAlert, headerVariant, size, isNormalSize, deleteCookies } = useContext(ContextWrapper);
+    const { windowSize, makeErrorAlert, headerVariant, isNormalSize, deleteCookies } = useContext(ContextWrapper);
 
     // Variables for making size responsible, depending on the screen size;
     const listHeadersSize = isNormalSize ? 20 : 17;

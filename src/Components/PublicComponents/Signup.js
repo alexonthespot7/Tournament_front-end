@@ -11,7 +11,7 @@ const initialSignupForm = {
     password: ''
 }
 
-const coefficient = 10000000;
+const coefficient = 2600000;
 const baseWidthPercentage = 32;
 
 export default function Signup() {
@@ -27,7 +27,7 @@ export default function Signup() {
     } = useContext(ContextWrapper);
 
     // The size variables for responsiveness of the page
-    const boxWidthPercentage = `${coefficient / Math.pow(windowSize.width, 1.9) + baseWidthPercentage}%`;
+    const boxWidthPercentage = `${coefficient / Math.pow(windowSize.width, 1.7) + baseWidthPercentage}%`;
     const gap = isNormalSize ? windowSize.height / 400 : windowSize.height / 350;
 
     useEffect(() => {
@@ -99,11 +99,11 @@ export default function Signup() {
 
     return (
         <Box
-            sx={{ mt: '10%', mb: '2%' }}
+            mt='2%'
             display='flex'
             flexDirection='column'
             alignItems='center'
-            justifyContent='flex-start'
+            justifyContent='center'
             height='100%'
             width='45%'
         >
@@ -116,7 +116,10 @@ export default function Signup() {
                         justifyContent='space-around'
                         width='95%'
                     >
-                        <Typography variant={headerVariant} sx={{ mb: 2 }}>
+                        <Typography
+                            variant={headerVariant}
+                            sx={{ mb: '2%' }}
+                        >
                             Signup
                         </Typography>
                         {windowSize.height < 410 &&
@@ -126,6 +129,7 @@ export default function Signup() {
                                 size='small'
                                 onClick={performSignup}
                                 sx={{
+                                    fontSize: 12,
                                     transition: '0.35s',
                                     '&:hover': { backgroundColor: '#b4b4b4' }
                                 }}

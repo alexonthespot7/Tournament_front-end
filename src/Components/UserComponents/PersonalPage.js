@@ -98,10 +98,14 @@ export default function PersonalPage() {
                 method: 'GET',
                 headers: { 'Authorization': Cookies.get('jwt') }
             });
+            console.log(response.status);
             if (!response.ok) {
                 if (response.status === 401) {
                     deleteCookies();
                     makeErrorAlert('Your session has expired. Please login again');
+                } else if (response.status === 403) {
+                    //redirect to main page
+                    makeErrorAlert('This page is forbidden for you');
                 } else {
                     makeErrorAlert(await response.text());
                 }
@@ -110,13 +114,8 @@ export default function PersonalPage() {
 
             response.json()
                 .then(data => {
-                    if (!data) {
-                        makeBlackAlert('You have no access to this page');
-                        //redirect to main page;
-                    } else {
-                        setPersonalInfo(data);
-                        setLoading(false);
-                    }
+                    setPersonalInfo(data);
+                    setLoading(false);
                 })
                 .catch(err => makeErrorAlert(err.message));
         } catch (error) {
