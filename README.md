@@ -7,6 +7,7 @@
 * [Usage Guide](#usage-guide)
 * [Features](#features)
 * [Technologies Used](#technologies-used)
+* [Dependencies](#dependencies)
 * [Screenshots](#screenshots)
 
 ## Usage Guide
@@ -36,6 +37,14 @@
 ## Technologies Used
 - React.js
 - css
+
+## Dependencies
+- [@mui/icons-material](https://www.npmjs.com/package/@mui/icons-material): Material-UI Icons library for customizable icons following Material Design guidelines.
+- [@mui/material](https://www.npmjs.com/package/@mui/material): Material-UI framework providing pre-designed React components.
+- [ag-grid-react](https://www.npmjs.com/package/ag-grid-react): React wrapper for AG-Grid to seamlessly integrate its functionalities.
+- [js-cookie](https://www.npmjs.com/package/js-cookie): Simplifies working with cookies in JavaScript.
+- [react-router-dom](https://www.npmjs.com/package/react-router-dom): Declarative routing for navigation and view handling in React.
+- [react-svg-pan-zoom](https://www.npmjs.com/package/react-svg-pan-zoom): React component library enabling panning and zooming for SVG elements.
 
 ## Screenshots
 <p align="center">
