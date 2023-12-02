@@ -1,9 +1,14 @@
 import { MenuItem, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import ContextWrapper from "../../context/ContextWrapper";
+import Cookies from "js-cookie";
 
-export default function SetResult({ round }) {
+export default function SetResult({ round, fetchRoundsForm, setLoading }) {
     const [openDialog, setOpenDialog] = useState(false);
     const [roundUpdated, setRoundUpdated] = useState({});
+
+    const { windowSize, makeErrorAlert, makeWarningAlert, makeSuccessAlert, headerVariant, isNormalSize, size, deleteCookies } = useContext(ContextWrapper);
+
     const handleClickOpen = () => {
         setRoundUpdated(round);
         setOpenDialog(true);
@@ -13,19 +18,69 @@ export default function SetResult({ round }) {
         setOpenDialog(false);
     }
 
-    const inputChanged = () => { }
+    const inputChanged = (event) => {
+        setRoundUpdated({ ...roundUpdated, [event.target.name]: event.target.value });
+    }
 
-    const handleSave = () => { }
+    const handleSave = () => {
+        if (roundUpdated.result === round.result) {
+            handleClose();
+            makeSuccessAlert('Round result was saved');
+        } else {
+            setLoading(true);
+            setResult();
+        }
+    }
+
+    const setResult = async () => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/setresult/${round.roundid}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': Cookies.get('jwt')
+                },
+                body: JSON.stringify(roundUpdated)
+            });
+            if (!response.ok) {
+                if (response.status === 401) {
+                    deleteCookies();
+                    makeErrorAlert('Your session has expired. Please login again');
+                } else if (response.status === 403) {
+                    makeErrorAlert(await response.text());
+                    //redirect to main page
+                } else if ([400, 409].includes(response.status)) {
+                    makeErrorAlert(await response.text());
+                    setLoading(false);
+                } else if (response.status === 406) {
+                    makeErrorAlert(await response.text());
+                    fetchRoundsForm();
+                }
+            } else {
+                fetchRoundsForm();
+                makeSuccessAlert('The result for the round is set successfully');
+            }
+        } catch (error) {
+            makeErrorAlert(error.message);
+        }
+    }
 
     return (
         <div>
-            <Button onClick={handleClickOpen} color='secondary' size='small' variant='contained'>
+            <Button
+                onClick={handleClickOpen}
+                color='secondary'
+                size='small'
+                variant='contained'
+            >
                 Set Result
             </Button>
             <Dialog open={openDialog} onClose={handleClose}>
-                <DialogTitle>Edit Round {round.roundid}</DialogTitle>
+                <DialogTitle fontSize={isNormalSize ? 20 : 17}>Edit Round {round.roundid}</DialogTitle>
                 <DialogContent>
                     <TextField
+                        color='secondary'
+                        size={size}
                         margin="dense"
                         name='stage.stage'
                         value={round.stage.stage}
@@ -36,6 +91,8 @@ export default function SetResult({ round }) {
                         disabled
                     />
                     <TextField
+                        color='secondary'
+                        size={size}
                         margin="dense"
                         name='user1.username'
                         value={round.user1.username}
@@ -46,6 +103,8 @@ export default function SetResult({ round }) {
                         disabled
                     />
                     <TextField
+                        color='secondary'
+                        size={size}
                         margin="dense"
                         name='user2.username'
                         value={round.user2.username}
@@ -56,6 +115,8 @@ export default function SetResult({ round }) {
                         disabled
                     />
                     <TextField
+                        color='secondary'
+                        size={size}
                         select
                         margin="dense"
                         name='result'
@@ -77,8 +138,21 @@ export default function SetResult({ round }) {
                     </TextField>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleSave}>Save</Button>
+                    <Button
+                        color='secondary'
+                        size={size}
+                        onClick={handleClose}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        variant='contained'
+                        color='secondary'
+                        size={size}
+                        onClick={handleSave}
+                    >
+                        Save
+                    </Button>
                 </DialogActions>
             </Dialog>
         </div>
