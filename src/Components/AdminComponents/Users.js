@@ -1,171 +1,96 @@
-import { Box, Button, IconButton, Typography } from '@mui/material';
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-material.css';
+import { useContext, useEffect, useState } from 'react';
+
+import { Box, Button, CircularProgress, IconButton, Typography } from '@mui/material';
+
 import { AgGridReact } from 'ag-grid-react';
-import DeleteIcon from '@mui/icons-material/Delete';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-quartz.css';
+
+import Cookies from 'js-cookie';
+
+import ContextWrapper from '../../context/ContextWrapper';
+
 import EditUserAdmin from './EditUserAdmin';
 import AddUser from './AddUser';
-
-const usersPageForm = {
-    "users": [
-        {
-            "id": 2,
-            "username": "danrey",
-            "passwordHash": "$2a$12$0Mu/91y.kvDE7rj0ZXrWkOxUISfqEuQcXyU.luDJIe7DW2W/eqUYq",
-            "role": "USER",
-            "isOut": false,
-            "isCompetitor": true,
-            "email": "bgw2595@myy.haaga-helia.fi",
-            "verificationCode": null,
-            "accountVerified": true,
-            "stage": {
-                "stageid": 1,
-                "stage": "No",
-                "isCurrent": true
-            }
-        },
-        {
-            "id": 3,
-            "username": "wanyeser",
-            "passwordHash": "$2a$12$0Mu/91y.kvDE7rj0ZXrWkOxUISfqEuQcXyU.luDJIe7DW2W/eqUYq",
-            "role": "USER",
-            "isOut": false,
-            "isCompetitor": true,
-            "email": "mrbudach2@mail.ru",
-            "verificationCode": null,
-            "accountVerified": true,
-            "stage": {
-                "stageid": 1,
-                "stage": "No",
-                "isCurrent": true
-            }
-        },
-        {
-            "id": 4,
-            "username": "loginTest",
-            "passwordHash": "$2a$12$19lxeD0nHwNrMxnGhWFNoOLMC/xOxd81ug1D.fboYQeoRHjyR9hym",
-            "role": "USER",
-            "isOut": false,
-            "isCompetitor": true,
-            "email": "login.test@gmail.com",
-            "verificationCode": null,
-            "accountVerified": true,
-            "stage": {
-                "stageid": 1,
-                "stage": "No",
-                "isCurrent": true
-            }
-        },
-        {
-            "id": 5,
-            "username": "danrey2",
-            "passwordHash": "$2a$12$0Mu/91y.kvDE7rj0ZXrWkOxUISfqEuQcXyU.luDJIe7DW2W/eqUYq",
-            "role": "USER",
-            "isOut": false,
-            "isCompetitor": true,
-            "email": "bgw259d5@myy.haaga-helia.fi",
-            "verificationCode": null,
-            "accountVerified": true,
-            "stage": {
-                "stageid": 1,
-                "stage": "No",
-                "isCurrent": true
-            }
-        },
-        {
-            "id": 6,
-            "username": "wanyeser2",
-            "passwordHash": "$2a$12$0Mu/91y.kvDE7rj0ZXrWkOxUISfqEuQcXyU.luDJIe7DW2W/eqUYq",
-            "role": "USER",
-            "isOut": false,
-            "isCompetitor": true,
-            "email": "mdrbudach2@mail.ru",
-            "verificationCode": null,
-            "accountVerified": true,
-            "stage": {
-                "stageid": 1,
-                "stage": "No",
-                "isCurrent": true
-            }
-        },
-        {
-            "id": 7,
-            "username": "danrey32",
-            "passwordHash": "$2a$12$0Mu/91y.kvDE7rj0ZXrWkOxUISfqEuQcXyU.luDJIe7DW2W/eqUYq",
-            "role": "USER",
-            "isOut": false,
-            "isCompetitor": true,
-            "email": "bg1w259d5@myy.haaga-helia.fi",
-            "verificationCode": null,
-            "accountVerified": true,
-            "stage": {
-                "stageid": 1,
-                "stage": "No",
-                "isCurrent": true
-            }
-        },
-        {
-            "id": 8,
-            "username": "wanyes3er2",
-            "passwordHash": "$2a$12$0Mu/91y.kvDE7rj0ZXrWkOxUISfqEuQcXyU.luDJIe7DW2W/eqUYq",
-            "role": "USER",
-            "isOut": false,
-            "isCompetitor": true,
-            "email": "mdrbu3dach2@mail.ru",
-            "verificationCode": null,
-            "accountVerified": true,
-            "stage": {
-                "stageid": 1,
-                "stage": "No",
-                "isCurrent": true
-            }
-        },
-        {
-            "id": 1,
-            "username": "axosinc",
-            "passwordHash": "$2a$12$0Mu/91y.kvDE7rj0ZXrWkOxUISfqEuQcXyU.luDJIe7DW2W/eqUYq",
-            "role": "ADMIN",
-            "isOut": true,
-            "isCompetitor": false,
-            "email": "aleksei2.shevelenkov@gmail.com",
-            "verificationCode": null,
-            "accountVerified": true,
-            "stage": {
-                "stageid": 1,
-                "stage": "No",
-                "isCurrent": true
-            }
-        }
-    ],
-    "showMakeBracket": true,
-    "showMakeAllCompetitors": false,
-    "showReset": false,
-    "bracketMade": false
-}
+import MakeBracket from './MakeBracket';
+import Reset from './Reset';
+import MakeAllCompetitors from './MakeAllCompetitors';
+import DeleteUser from './DeleteUser';
 
 export default function Users() {
+    const [loading, setLoading] = useState(true);
+    const [usersPageForm, setUsersPageForm] = useState(null);
+
+    const { windowSize, makeErrorAlert, makeWarningAlert, headerVariant, isNormalSize, size, deleteCookies } = useContext(ContextWrapper);
+
+    useEffect(() => {
+        if (Cookies.get('role') === 'ADMIN') {
+            fetchUsersPageForm();
+        } else {
+            //redirect to main page
+            makeWarningAlert('You don\'t have permission to access this page');
+        }
+    }, []);
+
+    const fetchUsersPageForm = async () => {
+        try {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/users`, {
+                method: 'GET',
+                headers: { 'Authorization': Cookies.get('jwt') }
+            });
+            if (!response.ok) {
+                if (response.status === 401) {
+                    deleteCookies();
+                    makeErrorAlert('Your session has expired, login again please');
+                } else if (response.status === 403) {
+                    makeErrorAlert(await response.text());
+                    //redirect to main page
+                } else {
+                    makeErrorAlert(await response.text());
+                }
+                return null;
+            }
+
+            response.json()
+                .then(data => {
+                    setUsersPageForm(data);
+                    setLoading(false);
+                })
+                .catch(err => makeErrorAlert(err.message));
+        } catch (error) {
+            makeErrorAlert(error.message);
+        }
+    }
+
+    const textSize = isNormalSize ? 16 : 13;
+    const buttonSx = { fontSize: isNormalSize ? 14 : 11 }
 
     const columnDefs = [
         { headerName: 'Username', field: 'username' },
         { headerName: 'Email', field: 'email' },
-        { headerName: 'Status', field: 'isOut', cellRenderer: params => { return <Typography>{params.value ? 'Out' : 'In'}</Typography> } },
-        { headerName: 'Participant?', field: 'isCompetitor', cellRenderer: params => { return <Typography>{params.value.toString()}</Typography> } },
-        { headerName: 'Stage', field: 'stage.stage' },
-        { headerName: 'Role', field: 'role' },
-        { headerName: 'Verified', field: 'accountVerified', cellRenderer: params => { return <Typography>{params.value.toString()}</Typography> } },
+        { width: 100, headerName: 'Status', field: 'isOut', cellRenderer: params => { return <Typography fontSize={textSize}>{params.value ? 'Out' : 'In'}</Typography> } },
+        { width: 130, headerName: 'Participant?', field: 'isCompetitor', cellRenderer: params => { return <Typography fontSize={textSize}>{params.value.toString()}</Typography> } },
+        { width: 100, headerName: 'Stage', field: 'stage.stage' },
+        { width: 100, headerName: 'Role', field: 'role', cellRenderer: params => { return <Typography fontSize={textSize}>{params.value.toLowerCase()}</Typography> } },
+        { width: 100, headerName: 'Verified', field: 'accountVerified', cellRenderer: params => { return <Typography fontSize={textSize}>{params.value.toString()}</Typography> } },
         {
+            width: 80,
             sortable: false,
             filter: false,
             headerName: '',
             cellRenderer: params => {
                 const user = params.data;
                 return (
-                    <EditUserAdmin user={user} bracketMade={usersPageForm.bracketMade} />
+                    <EditUserAdmin
+                        fetchUsersPageForm={fetchUsersPageForm}
+                        user={user}
+                        bracketMade={usersPageForm.bracketMade}
+                    />
                 );
             },
-            flex: 1,
         },
         {
+            width: 80,
             field: 'id',
             sortable: false,
             filter: false,
@@ -176,51 +101,109 @@ export default function Users() {
                 const isAdmin = params.data.role === 'ADMIN';
                 if (!(isParticipant && usersPageForm.bracketMade || isAdmin)) {
                     return (
-                        <IconButton>
-                            <DeleteIcon color='error' />
-                        </IconButton>
+                        <DeleteUser
+                            userId={userId}
+                            setLoading={setLoading}
+                            fetchUsersPageForm={fetchUsersPageForm}
+                        />
                     );
                 }
                 return null; // Hide the cell if conditions are not met
             },
-            flex: 1,
         },
     ];
 
-    const makeAllCompetitors = () => { }
-    const makeBracket = () => { }
-    const reset = () => { }
-
     return (
-        <Box sx={{ mt: 10 }} width='100%' display='flex' flexDirection='column' justifyContent='center' alignItems='center' height='90%' >
-            <Typography variant="h4" sx={{ mb: 2 }}>
-                Users
-            </Typography>
-            <div className="ag-theme-material" style={{ width: '70%', height: '65%', marginBottom: '1.5%' }}>
-                <AgGridReact
-                    rowData={usersPageForm.users}
-                    columnDefs={columnDefs}
-                    defaultColDef={{ flex: 2, resizable: true, filter: true, sortable: true, cellStyle: { 'textAlign': 'left' }, cellRenderer: params => { return <Typography>{params.value}</Typography> } }}
-                    pagination={true}
-                    paginationPageSize={10}
-                    animateRows={true}
-                />
-            </div>
-            <Box display='flex' width='70%' justifyContent='space-around'>
-                <Button color='secondary' variant='contained'>
-                    Stages
-                </Button>
-                <AddUser bracketMade={usersPageForm.bracketMade} />
-                {usersPageForm.showMakeAllCompetitors && <Button variant='outlined' color='secondary' onClick={makeAllCompetitors}>
-                    Make all competitors
-                </Button>}
-                {usersPageForm.showMakeBracket && <Button variant='contained' color='secondary' onClick={makeBracket}>
-                    Make bracket
-                </Button>}
-                {usersPageForm.showReset && <Button variant='contained' color='error' onClick={reset}>
-                    Reset
-                </Button>}
-            </Box>
+        <Box
+            mt='5%'
+            width='100%'
+            display='flex'
+            flexDirection='column'
+            justifyContent='center'
+            alignItems='center'
+            height='90%'
+        >
+            {!loading &&
+                <>
+                    <Typography
+                        variant={headerVariant}
+                        sx={{ mb: '2%' }}
+                    >
+                        Users
+                    </Typography>
+                    <div
+                        className={
+                            'grid-wrapper ' +
+                            "ag-theme-quartz"
+                        }
+                        style={{
+                            width: isNormalSize ? '70%' : '90%',
+                            height: '65%',
+                            marginBottom: '1.5%'
+                        }}
+                    >
+                        <AgGridReact
+                            rowData={usersPageForm.users}
+                            columnDefs={columnDefs}
+                            defaultColDef={{ resizable: true, filter: true, sortable: true, cellStyle: { 'textAlign': 'left' }, cellRenderer: params => { return <Typography fontSize={textSize}>{params.value}</Typography> } }}
+                        />
+                    </div>
+                    <Box
+                        display='flex'
+                        flexDirection={windowSize.width > 500 ? 'row' : 'column'}
+                        width={isNormalSize ? '70%' : '90%'}
+                        justifyContent={'space-around'}
+                        gap={windowSize.width > 500 ? '' : '20%'}
+                    >
+                        <Box
+                            flex={2}
+                            display='flex'
+                            justifyContent='space-around'
+                        >
+                            <Button
+                                sx={buttonSx}
+                                size={size}
+                                color='secondary'
+                                variant='contained'
+                            >
+                                Stages
+                            </Button>
+                            <AddUser
+                                bracketMade={usersPageForm.bracketMade}
+                                fetchUsersPageForm={fetchUsersPageForm}
+                            />
+                        </Box>
+                        <Box
+                            flex={3}
+                            display='flex'
+                            justifyContent='space-around'
+                        >
+                            {usersPageForm.showMakeAllCompetitors &&
+                                <MakeAllCompetitors
+                                    buttonSx={buttonSx}
+                                    setLoading={setLoading}
+                                    fetchUsersPageForm={fetchUsersPageForm}
+                                />
+                            }
+                            {usersPageForm.showMakeBracket &&
+                                <MakeBracket
+                                    buttonSx={buttonSx}
+                                    setLoading={setLoading}
+                                    fetchUsersPageForm={fetchUsersPageForm}
+                                />
+                            }
+                            {usersPageForm.showReset &&
+                                <Reset
+                                    buttonSx={buttonSx}
+                                    setLoading={setLoading}
+                                    fetchUsersPageForm={fetchUsersPageForm}
+                                />
+                            }
+                        </Box>
+                    </Box>
+                </>
+            }
+            {loading && <CircularProgress color='secondary' />}
         </Box>
     );
 }
