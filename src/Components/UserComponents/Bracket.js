@@ -92,16 +92,17 @@ export default function Bracket() {
         }
     }
 
-    const currentStage = bracketPageInfo.stages.find(stage => stage.current).stage;
 
     const findUsernameOfContestant = (round, contestantNumber) => {
-        const isCurrent = round.stage === currentStage;
+        const isFirst = round.stage === firstStage;
         const username = round[`usernameOfCompetitor${contestantNumber}`];
 
-        return username ? username : isCurrent ? '—' : null;
+        return username ? username : isFirst ? '—' : null;
     }
 
     const roundsOfFirstStage = bracketPageInfo.stages[0].rounds.length;
+
+    const firstStage = bracketPageInfo.stages[0].stage;
 
     //finding the width of the svg box: each stage gets width of its width and stageSpacing (the last stage shouldn't have stageSpacing); 
     //Also there is a horizontalIndent on the both sides of the page
