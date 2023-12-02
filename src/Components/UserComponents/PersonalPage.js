@@ -98,7 +98,6 @@ export default function PersonalPage() {
                 method: 'GET',
                 headers: { 'Authorization': Cookies.get('jwt') }
             });
-            console.log(response.status);
             if (!response.ok) {
                 if (response.status === 401) {
                     deleteCookies();

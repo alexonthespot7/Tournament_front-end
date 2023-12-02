@@ -9,7 +9,7 @@ import Cookies from 'js-cookie';
 
 import ContextWrapper from '../../context/ContextWrapper';
 
-export const findUsernameOfContestant = (username) => {
+const findUsernameOfContestant = (username) => {
     return username ? username : '—';
 }
 

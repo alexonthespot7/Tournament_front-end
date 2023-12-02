@@ -67,7 +67,7 @@ export default function Signup() {
                 makeSuccessAlert('Signup process went well, we sent a verification link to your email');
             } else {
                 setLoading(false);
-                makeErrorAlert((await response.text()).toString());
+                makeErrorAlert(await response.text());
             }
         } catch (error) {
             makeErrorAlert(error.message);
