@@ -16,6 +16,7 @@ import MakeBracket from './MakeBracket';
 import Reset from './Reset';
 import MakeAllCompetitors from './MakeAllCompetitors';
 import DeleteUser from './DeleteUser';
+import { useNavigate } from 'react-router-dom';
 
 export default function Users() {
     const [loading, setLoading] = useState(true);
@@ -23,11 +24,13 @@ export default function Users() {
 
     const { windowSize, makeErrorAlert, makeWarningAlert, headerVariant, isNormalSize, size, deleteCookies } = useContext(ContextWrapper);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         if (Cookies.get('role') === 'ADMIN') {
             fetchUsersPageForm();
         } else {
-            //redirect to main page
+            navigate('/');
             makeWarningAlert('You don\'t have permission to access this page');
         }
     }, []);
@@ -41,10 +44,11 @@ export default function Users() {
             if (!response.ok) {
                 if (response.status === 401) {
                     deleteCookies();
+                    navigate('/login');
                     makeErrorAlert('Your session has expired, login again please');
                 } else if (response.status === 403) {
                     makeErrorAlert(await response.text());
-                    //redirect to main page
+                    navigate('/');
                 } else {
                     makeErrorAlert(await response.text());
                 }
@@ -161,6 +165,7 @@ export default function Users() {
                             justifyContent='space-around'
                         >
                             <Button
+                                onClick={() => navigate('/admin/stages')}
                                 sx={buttonSx}
                                 size={size}
                                 color='secondary'

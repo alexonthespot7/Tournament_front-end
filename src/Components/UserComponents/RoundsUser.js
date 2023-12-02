@@ -8,6 +8,7 @@ import SouthIcon from '@mui/icons-material/South';
 import Cookies from 'js-cookie';
 
 import ContextWrapper from '../../context/ContextWrapper';
+import { useNavigate } from 'react-router-dom';
 
 const findUsernameOfContestant = (username) => {
     return username ? username : '—';
@@ -21,6 +22,8 @@ export default function RoundsUser() {
     const [sortState, setSortState] = useState('none');
 
     const { windowSize, makeErrorAlert, makeWarningAlert, headerVariant, isNormalSize, deleteCookies } = useContext(ContextWrapper);
+
+    const navigate = useNavigate();
 
     const isMedium = windowSize.width > 650;
     const isSmall = windowSize.width > 500;
@@ -42,6 +45,7 @@ export default function RoundsUser() {
             if (!response.ok) {
                 if (response.status === 401) {
                     deleteCookies();
+                    navigate('/login');
                     makeErrorAlert('Your session has expired, login again please');
                 } else {
                     makeErrorAlert(await response.text())
@@ -49,7 +53,7 @@ export default function RoundsUser() {
                 return null;
             }
             if (response.status === 202) {
-                //redirect to main page
+                navigate('/');
                 makeWarningAlert('The bracket wasn\'t made yet')
             } else {
                 response.json()

@@ -4,6 +4,7 @@ import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, Di
 
 import ContextWrapper from '../../context/ContextWrapper';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const initialPasswordForm = {
     oldPassword: '',
@@ -20,6 +21,8 @@ export default function ChangePassword() {
         makeErrorAlert, makeBlackAlert,
         makeSuccessAlert, isNormalSize, size, deleteCookies
     } = useContext(ContextWrapper);
+
+    const navigate = useNavigate();
 
     const handleClickOpen = () => {
         setPasswordForm(initialPasswordForm);
@@ -59,6 +62,7 @@ export default function ChangePassword() {
             if (!response.ok) {
                 if (response.status === 401) {
                     deleteCookies();
+                    navigate('/login');
                     makeErrorAlert('Your session has expired. Please login again');
                 } else {
                     makeErrorAlert(await response.text());

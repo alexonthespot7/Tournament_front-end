@@ -12,6 +12,7 @@ import Cookies from 'js-cookie';
 
 import ContextWrapper from '../../context/ContextWrapper';
 import ChangePassword from './ChangePassword';
+import { useNavigate } from 'react-router-dom';
 
 const initialPersonalInfo = {
     username: '',
@@ -32,6 +33,8 @@ export default function PersonalPage() {
     const [sortState, setSortState] = useState('none');
 
     const { windowSize, makeErrorAlert, makeBlackAlert, makeSuccessAlert, headerVariant, size, isNormalSize, deleteCookies } = useContext(ContextWrapper);
+
+    const navigate = useNavigate();
 
     const isMedium = windowSize.width > 550;
 
@@ -85,7 +88,7 @@ export default function PersonalPage() {
     useEffect(() => {
         if (!Cookies.get('userId')) {
             deleteCookies();
-            //redirect to login;
+            navigate('/login');
             makeErrorAlert('You don\'t have access now');
         } else {
             fetchPersonalInfo();
@@ -101,9 +104,10 @@ export default function PersonalPage() {
             if (!response.ok) {
                 if (response.status === 401) {
                     deleteCookies();
+                    navigate('/login');
                     makeErrorAlert('Your session has expired. Please login again');
                 } else if (response.status === 403) {
-                    //redirect to main page
+                    navigate('/');
                     makeErrorAlert('This page is forbidden for you');
                 } else {
                     makeErrorAlert(await response.text());
@@ -132,7 +136,7 @@ export default function PersonalPage() {
     const saveChanges = () => {
         if (!Cookies.get('userId')) {
             deleteCookies();
-            //redirect to login;
+            navigate('/login');
             makeErrorAlert('You don\'t have access now');
         } else if (window.confirm('Are you sure you want to make changes')) {
             setLoading(true);
@@ -153,6 +157,7 @@ export default function PersonalPage() {
             if (!response.ok) {
                 if (response.status === 401) {
                     deleteCookies();
+                    navigate('/login');
                     makeErrorAlert('Your session has expired. Please login again');
                 } else {
                     makeErrorAlert(await response.text());

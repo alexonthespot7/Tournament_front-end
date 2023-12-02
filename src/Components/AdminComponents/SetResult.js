@@ -2,12 +2,15 @@ import { MenuItem, Button, Dialog, DialogActions, DialogContent, DialogTitle, Te
 import { useContext, useState } from "react";
 import ContextWrapper from "../../context/ContextWrapper";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 export default function SetResult({ round, fetchRoundsForm, setLoading }) {
     const [openDialog, setOpenDialog] = useState(false);
     const [roundUpdated, setRoundUpdated] = useState({});
 
     const { windowSize, makeErrorAlert, makeWarningAlert, makeSuccessAlert, headerVariant, isNormalSize, size, deleteCookies } = useContext(ContextWrapper);
+
+    const navigate = useNavigate();
 
     const handleClickOpen = () => {
         setRoundUpdated(round);
@@ -45,10 +48,11 @@ export default function SetResult({ round, fetchRoundsForm, setLoading }) {
             if (!response.ok) {
                 if (response.status === 401) {
                     deleteCookies();
+                    navigate('/login');
                     makeErrorAlert('Your session has expired. Please login again');
                 } else if (response.status === 403) {
                     makeErrorAlert(await response.text());
-                    //redirect to main page
+                    navigate('/');
                 } else if ([400, 409].includes(response.status)) {
                     makeErrorAlert(await response.text());
                     setLoading(false);

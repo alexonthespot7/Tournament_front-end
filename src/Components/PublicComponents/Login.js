@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 
 import ContextWrapper from '../../context/ContextWrapper';
 import { useNavigate } from 'react-router-dom';
+import ForgotPassword from './ForgotPassword';
 
 const initialCredentials = {
     username: '',
@@ -40,7 +41,6 @@ export default function Login() {
     }
 
     const login = async () => {
-        setLoading(true);
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
                 method: 'POST',
@@ -65,7 +65,7 @@ export default function Login() {
                 makeSuccessAlert('Login process was successful');
             } else {
                 setLoading(false);
-                makeErrorAlert((await response.text()).toString());
+                makeErrorAlert(await response.text());
             }
         } catch (error) {
             makeErrorAlert('Can\'t reach the server at the moment');
@@ -78,6 +78,7 @@ export default function Login() {
         } else if (credentials.password === '') {
             makeBlackAlert('Please provide password');
         } else {
+            setLoading(true);
             login();
         }
     }
@@ -152,19 +153,14 @@ export default function Login() {
                         justifyContent='space-between'
                     >
                         <Button
+                            onClick={() => navigate('/signup')}
                             size={size}
                             variant='text'
                             color='secondary'
                         >
                             Sign Up
                         </Button>
-                        <Button
-                            size={size}
-                            variant='text'
-                            color='secondary'
-                        >
-                            Forgot Password?
-                        </Button>
+                        <ForgotPassword />
                     </Box>
                 </Box>
             }

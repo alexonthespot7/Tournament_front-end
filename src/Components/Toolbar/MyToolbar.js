@@ -23,13 +23,14 @@ export default function MyToolbar() {
     const logOut = () => {
         if (window.confirm('Are you sure you want to log out?')) {
             deleteCookies();
+            navigate('/login');
             makeSuccessAlert('You\'ve log out successfully');
         }
     }
 
     const goBack = () => {
         if (location.pathname === '/admin/stages') {
-            navigate('/admin/rounds');
+            navigate('/admin/users');
         } else {
             navigate('/');
         }

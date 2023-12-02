@@ -2,10 +2,13 @@ import { useContext } from "react";
 import ContextWrapper from "../../context/ContextWrapper";
 import { Button } from "@mui/material";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 export default function ConfirmResults({ setLoading, fetchRoundsForm }) {
 
     const { windowSize, makeErrorAlert, makeSuccessAlert, makeWarningAlert, headerVariant, isNormalSize, size, deleteCookies } = useContext(ContextWrapper);
+
+    const navigate = useNavigate();
 
     const confirmResults = () => {
         if (window.confirm('Are you sure you want to confirm current stage results?')) {
@@ -25,12 +28,13 @@ export default function ConfirmResults({ setLoading, fetchRoundsForm }) {
             if (!response.ok) {
                 if (response.status === 401) {
                     deleteCookies();
+                    navigate('/login');
                     makeErrorAlert('Your session has expired. Please login again');
                 } else if (response.status === 406) {
                     makeErrorAlert(await response.text());
                 } else if (response.status === 403) {
                     makeErrorAlert(await response.text());
-                    //redirect to main page
+                    navigate('/');
                 } else {
                     makeErrorAlert(await response.text());
                 }

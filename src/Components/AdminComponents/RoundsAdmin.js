@@ -7,6 +7,7 @@ import SetResult from './SetResult';
 import Cookies from 'js-cookie';
 import ContextWrapper from '../../context/ContextWrapper';
 import ConfirmResults from './ConfirmResults';
+import { useNavigate } from 'react-router-dom';
 
 export const findUsernameOfContestant = (username) => {
     return username ? username : '—';
@@ -18,11 +19,13 @@ export default function RoundsAdmin() {
 
     const { windowSize, makeErrorAlert, makeWarningAlert, headerVariant, isNormalSize, size, deleteCookies } = useContext(ContextWrapper);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         if (Cookies.get('role') === 'ADMIN') {
             fetchRoundsForm();
         } else {
-            //redirect to main page
+            navigate('/');
             makeWarningAlert('You don\'t have permission to access this page');
         }
     }, []);
@@ -36,10 +39,11 @@ export default function RoundsAdmin() {
             if (!response.ok) {
                 if (response.status === 401) {
                     deleteCookies();
+                    navigate('/login');
                     makeErrorAlert('Your session has expired, login again please');
                 } else if (response.status === 403) {
                     makeErrorAlert(await response.text());
-                    //redirect to main page
+                    navigate('/');
                 } else {
                     makeErrorAlert(await response.text());
                 }
@@ -47,7 +51,7 @@ export default function RoundsAdmin() {
             }
             if (response.status === 202) {
                 makeErrorAlert('The bracket was not made yet');
-                //redirect to main page
+                navigate('/');
                 return null;
             }
 

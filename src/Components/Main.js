@@ -12,8 +12,6 @@ import PublicMainContent from './PublicComponents/PublicMainContent';
 import UserMainContent from './UserComponents/UserMainContent';
 import ContextWrapper from '../context/ContextWrapper';
 
-
-
 export default function Main() {
     const { windowSize, size, isNormalSize } = useContext(ContextWrapper);
 
@@ -132,7 +130,11 @@ export default function Main() {
                         backgroundColor: 'white',
                         padding: '4px', // Adjust as needed to fit the icon properly
                     }}>
-                        <IconButton size={size} color='primary'>
+                        <IconButton
+                            onClick={() => window.open('https://www.linkedin.com/in/alexonthespot')}
+                            size={size}
+                            color='primary'
+                        >
                             <LinkedInIcon fontSize={size} />
                         </IconButton>
                     </div>
@@ -142,7 +144,11 @@ export default function Main() {
                         backgroundColor: 'white',
                         padding: '4px', // Adjust as needed to fit the icon properly
                     }}>
-                        <IconButton size={size} color='secondary'>
+                        <IconButton
+                            onClick={() => window.open('https://github.com/alexonthespot7')}
+                            size={size}
+                            color='secondary'
+                        >
                             <GitHubIcon fontSize={size} />
                         </IconButton>
                     </div>
@@ -152,7 +158,11 @@ export default function Main() {
                         backgroundColor: 'white',
                         padding: '4px', // Adjust as needed to fit the icon properly
                     }}>
-                        <IconButton size={size} color='secondary'>
+                        <IconButton
+                            onClick={() => window.open('https://aleksei-shevelenkov.netlify.app')}
+                            size={size}
+                            color='secondary'
+                        >
                             <WebAssetIcon fontSize={size} />
                         </IconButton>
                     </div>

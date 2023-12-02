@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import { useState } from 'react';
 import ContextWrapper from '../../context/ContextWrapper';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 export default function EditUserAdmin({ fetchUsersPageForm, user, bracketMade }) {
     const [loading, setLoading] = useState(false);
@@ -11,6 +12,8 @@ export default function EditUserAdmin({ fetchUsersPageForm, user, bracketMade })
     const [userUpdated, setUserUpdated] = useState({});
 
     const { makeErrorAlert, makeSuccessAlert, makeBlackAlert, isNormalSize, size, deleteCookies } = useContext(ContextWrapper);
+
+    const navigate = useNavigate();
 
     const handleClickOpen = () => {
         setUserUpdated(user);
@@ -64,9 +67,10 @@ export default function EditUserAdmin({ fetchUsersPageForm, user, bracketMade })
             } else if (response.status === 401) {
                 makeErrorAlert(await response.text());
                 deleteCookies();
+                navigate('/login');
             } else if (response.status === 403) {
                 makeErrorAlert(await response.text());
-                //redirect to main page;
+                navigate('/');
             } else {
                 setLoading(false);
                 makeErrorAlert(await response.text());

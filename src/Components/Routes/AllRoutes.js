@@ -14,6 +14,7 @@ import AdminRoute from './AdminRoute';
 import RoundsAdmin from '../AdminComponents/RoundsAdmin';
 import Stages from '../AdminComponents/Stages';
 import Users from '../AdminComponents/Users';
+import Verify from '../Verify';
 
 export default function AllRoutes() {
     const location = useLocation();
@@ -94,6 +95,10 @@ export default function AllRoutes() {
                         <Users />
                     </AdminRoute>
                 }
+            />
+            <Route
+                path='/verify'
+                element={<Verify />}
             />
             <Route
                 path='*'

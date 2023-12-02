@@ -7,6 +7,7 @@ import { ReactSVGPanZoom } from 'react-svg-pan-zoom';
 import Cookies from 'js-cookie';
 
 import ContextWrapper from '../../context/ContextWrapper';
+import { useNavigate } from 'react-router-dom';
 
 const stageWidth = 200;
 
@@ -53,6 +54,8 @@ export default function Bracket() {
 
     const { windowSize, makeErrorAlert, makeWarningAlert, deleteCookies } = useContext(ContextWrapper);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         fetchBracketPageInfo();
     }, []);
@@ -70,6 +73,7 @@ export default function Bracket() {
             if (!response.ok) {
                 if (response.status === 401) {
                     deleteCookies();
+                    navigate('/login');
                     makeErrorAlert('Your session has expired, login again please');
                 } else {
                     makeErrorAlert(await response.text())
@@ -77,7 +81,7 @@ export default function Bracket() {
                 return null;
             }
             if (response.status === 202) {
-                //redirect to main page
+                navigate('/');
                 makeWarningAlert('The bracket wasn\'t made yet')
             } else {
                 response.json()

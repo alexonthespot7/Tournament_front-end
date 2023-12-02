@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Box, Button, CircularProgress, MenuItem, TextField, Typography } from '@mui/material';
 
 import ContextWrapper from '../../context/ContextWrapper';
+import { useNavigate } from 'react-router-dom';
 
 const initialSignupForm = {
     isCompetitor: false,
@@ -25,6 +26,8 @@ export default function Signup() {
         makeSuccessAlert, isNormalSize, headerVariant,
         size
     } = useContext(ContextWrapper);
+
+    const navigate = useNavigate();
 
     // The size variables for responsiveness of the page
     const boxWidthPercentage = `${coefficient / Math.pow(windowSize.width, 1.7) + baseWidthPercentage}%`;
@@ -65,6 +68,7 @@ export default function Signup() {
                 setSignupForm(initialSignupForm);
                 setLoading(false);
                 makeSuccessAlert('Signup process went well, we sent a verification link to your email');
+                navigate('/login');
             } else {
                 setLoading(false);
                 makeErrorAlert(await response.text());
@@ -223,6 +227,7 @@ export default function Signup() {
                         >
                             {windowSize.height > 450 &&
                                 <Button
+                                    onClick={() => navigate('/login')}
                                     size={size}
                                     variant='text'
                                     color='secondary'

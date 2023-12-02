@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { useState } from "react";
 import ContextWrapper from "../../context/ContextWrapper";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const initialUserForm = {
     isCompetitor: false,
@@ -21,6 +22,7 @@ export default function AddUser({ bracketMade, fetchUsersPageForm }) {
 
     const { makeBlackAlert, makeErrorAlert, makeSuccessAlert, isNormalSize, size, deleteCookies } = useContext(ContextWrapper);
 
+    const navigate = useNavigate();
 
     const handleClickOpen = () => {
         setUser(initialUserForm);
@@ -74,9 +76,10 @@ export default function AddUser({ bracketMade, fetchUsersPageForm }) {
             } else if (response.status === 401) {
                 makeErrorAlert(await response.text());
                 deleteCookies();
+                navigate('/login');
             } else if (response.status === 403) {
                 makeErrorAlert(await response.text());
-                //redirect to main page;
+                navigate('/');
             } else {
                 setLoading(false);
                 makeErrorAlert(await response.text());
