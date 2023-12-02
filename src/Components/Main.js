@@ -107,10 +107,10 @@ export default function Main() {
                     alignItems: 'center',
                     justifyContent: 'space-around',
                     borderRadius: '12px', // Rounded corners for the bottom row
-                    border: '2px solid #006494', // Border style and color
+                    border: '2px solid #171717', // Border style and color
                     padding: isNormalSize ? '15px' : '10px', // Padding for the bottom row
                     width: bottomRowWidth,
-                    maxWidth: '95%'
+                    maxWidth: '90%'
                 }}
             >
                 <Typography

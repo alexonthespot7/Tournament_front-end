@@ -1,6 +1,5 @@
 import './App.css';
 import { AppBar, Stack, Toolbar } from '@mui/material';
-import logo_transparent from './assets/logo_transparent.png';
 import { useContext, useEffect, useState } from 'react';
 import ContextWrapper from './context/ContextWrapper';
 import Main from './Components/Main';
@@ -13,21 +12,17 @@ import Bracket from './Components/UserComponents/Bracket';
 import RoundsAdmin from './Components/AdminComponents/RoundsAdmin';
 import Stages from './Components/AdminComponents/Stages';
 import Users from './Components/AdminComponents/Users';
+import AllRoutes from './Components/Routes/AllRoutes';
+import MyToolbar from './Components/Toolbar/MyToolbar';
 
 
 
 function App() {
-  const { windowSize } = useContext(ContextWrapper);
-
   return (
     <div className="App">
-      <AppBar position='fixed' sx={{ background: 'linear-gradient(to right, #E2E2E2 0%, #f4f4f4 50%, #E2E2E2 100%)', boxShadow: 7 }}>
-        <Toolbar sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-          <img src={logo_transparent} width={165 + windowSize.width / 28} height='auto' alt='Logo' />
-        </Toolbar>
-      </AppBar>
+      <MyToolbar />
       <div className="App-header">
-        <Bracket />
+        <AllRoutes />
       </div>
 
     </div>

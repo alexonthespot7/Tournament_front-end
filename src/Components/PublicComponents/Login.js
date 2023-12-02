@@ -8,6 +8,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Cookies from 'js-cookie';
 
 import ContextWrapper from '../../context/ContextWrapper';
+import { useNavigate } from 'react-router-dom';
 
 const initialCredentials = {
     username: '',
@@ -26,6 +27,8 @@ export default function Login() {
         windowSize, makeErrorAlert, makeBlackAlert,
         makeSuccessAlert, headerVariant, size
     } = useContext(ContextWrapper);
+
+    const navigate = useNavigate();
 
     // The size variables for responsiveness of the page
     const boxWidthPercentage = `${coefficient / Math.pow(windowSize.width, 1.7) + baseWidthPercentage}%`;
@@ -58,6 +61,7 @@ export default function Login() {
                 setCredentials(initialCredentials);
 
                 setLoading(false);
+                navigate('/');
                 makeSuccessAlert('Login process was successful');
             } else {
                 setLoading(false);

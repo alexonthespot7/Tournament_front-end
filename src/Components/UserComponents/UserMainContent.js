@@ -5,6 +5,7 @@ import { Box, Button, CircularProgress } from '@mui/material';
 import Cookies from 'js-cookie';
 
 import ContextWrapper from '../../context/ContextWrapper';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function UserMainContent() {
@@ -12,6 +13,8 @@ export default function UserMainContent() {
     const [loading, setLoading] = useState(true);
 
     const { windowSize, makeErrorAlert, size } = useContext(ContextWrapper);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchRoundsQuantity();
@@ -35,6 +38,7 @@ export default function UserMainContent() {
         if (Cookies.get('role') === 'USER') {
             return (
                 <Button
+                    onClick={() => navigate('/competitors')}
                     size={size}
                     sx={{
                         transition: '0.35s',
@@ -49,6 +53,7 @@ export default function UserMainContent() {
         } else if (roundsQuantity > 0) {
             return (
                 <Button
+                    onClick={() => navigate('/admin/rounds')}
                     size={size}
                     sx={{
                         transition: '0.35s',
@@ -63,6 +68,7 @@ export default function UserMainContent() {
         } else {
             return (
                 <Button
+                    onClick={() => navigate('/admin/users')}
                     size={size}
                     sx={{
                         transition: '0.35s',
@@ -81,6 +87,7 @@ export default function UserMainContent() {
         if (Cookies.get('role') === 'USER') {
             return (
                 <Button
+                    onClick={() => navigate('/rounds')}
                     size={size}
                     sx={{
                         transition: '0.35s',
@@ -95,6 +102,7 @@ export default function UserMainContent() {
         } else {
             return (
                 <Button
+                    onClick={() => navigate('/admin/users')}
                     size={size}
                     sx={{
                         transition: '0.35s',
@@ -125,6 +133,7 @@ export default function UserMainContent() {
                     >
                         <FirstButton />
                         <Button
+                            onClick={() => navigate(`/competitors/${Cookies.get('userId')}`)}
                             size={size}
                             sx={{
                                 transition: '0.35s',
@@ -144,6 +153,7 @@ export default function UserMainContent() {
                         >
                             <SecondButton />
                             <Button
+                                onClick={() => navigate('/bracket')}
                                 size={size}
                                 sx={{
                                     transition: '0.35s',
