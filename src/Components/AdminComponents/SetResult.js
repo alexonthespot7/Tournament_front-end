@@ -38,7 +38,7 @@ export default function SetResult({ round, fetchRoundsForm, setLoading }) {
     const setResult = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/setresult/${round.roundid}`, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': Cookies.get('jwt')

@@ -23,7 +23,7 @@ export default function Reset({ buttonSx, setLoading, fetchUsersPageForm }) {
     const fetchReset = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/reset`, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Authorization': Cookies.get('jwt')
                 }

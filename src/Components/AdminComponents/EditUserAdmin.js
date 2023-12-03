@@ -52,7 +52,7 @@ export default function EditUserAdmin({ fetchUsersPageForm, user, bracketMade })
     const editUser = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/updateuser/${user.id}`, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': Cookies.get('jwt')

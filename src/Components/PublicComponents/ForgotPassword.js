@@ -45,7 +45,7 @@ export default function ForgotPassword() {
     const resetPassword = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/resetpassword`, {
-                method: 'POST',
+                method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(emailForm)
             });

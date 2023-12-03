@@ -26,7 +26,7 @@ export default function Verify() {
     const verifyUser = async (codeForm) => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/verify`, {
-                method: 'POST',
+                method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(codeForm)
             });

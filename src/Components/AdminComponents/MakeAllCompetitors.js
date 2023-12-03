@@ -22,7 +22,7 @@ export default function MakeAllCompetitors({ buttonSx, setLoading, fetchUsersPag
     const fetchMakeAllCompetitors = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/makeallcompetitors`, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Authorization': Cookies.get('jwt')
                 }

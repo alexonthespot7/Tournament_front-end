@@ -23,7 +23,7 @@ export default function MakeBracket({ buttonSx, setLoading, fetchUsersPageForm }
     const fetchMakeBracket = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/makebracket`, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Authorization': Cookies.get('jwt')
                 }

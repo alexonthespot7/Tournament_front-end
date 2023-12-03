@@ -147,7 +147,7 @@ export default function PersonalPage() {
     const updateUser = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/updateuser/${Cookies.get('userId')}`, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': Cookies.get('jwt')

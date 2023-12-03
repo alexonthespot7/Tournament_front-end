@@ -20,7 +20,7 @@ export default function ConfirmResults({ setLoading, fetchRoundsForm }) {
     const fetchConfirmResults = async () => {
         try {
             const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/confirmresults`, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Authorization': Cookies.get('jwt')
                 }
