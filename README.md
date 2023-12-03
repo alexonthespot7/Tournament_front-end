@@ -28,6 +28,10 @@ To activate smtp service functionality you will need to set the following env va
     3. run the following command in a terminal window (in the complete) directory:<br>
 ```npm start```<br>
     4. Navigate to localhost:3000
+  
+ADMIN credentials:<br>
+* password: asas2233<br>
+* username: admin
 
 ## Features
 ### For User
