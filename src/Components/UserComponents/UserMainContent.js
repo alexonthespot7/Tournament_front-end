@@ -123,6 +123,7 @@ export default function UserMainContent() {
             flexDirection='column'
             gap={windowSize.height / 75}
             width='100%'
+            justifyContent='center'
         >
             {!loading &&
                 <>

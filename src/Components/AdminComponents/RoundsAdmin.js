@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { Box, Button, Card, CircularProgress, IconButton, List, ListItem, ListItemText, ListSubheader, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { AgGridReact } from 'ag-grid-react';
@@ -17,7 +17,7 @@ export default function RoundsAdmin() {
     const [loading, setLoading] = useState(true);
     const [roundsFormAdmin, setRoundsFormAdmin] = useState(null);
 
-    const { windowSize, makeErrorAlert, makeWarningAlert, headerVariant, isNormalSize, size, deleteCookies } = useContext(ContextWrapper);
+    const { makeErrorAlert, makeWarningAlert, headerVariant, isNormalSize, deleteCookies } = useContext(ContextWrapper);
 
     const navigate = useNavigate();
 

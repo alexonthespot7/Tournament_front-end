@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function ConfirmResults({ setLoading, fetchRoundsForm }) {
 
-    const { windowSize, makeErrorAlert, makeSuccessAlert, makeWarningAlert, headerVariant, isNormalSize, size, deleteCookies } = useContext(ContextWrapper);
+    const { makeErrorAlert, makeSuccessAlert, size, deleteCookies } = useContext(ContextWrapper);
 
     const navigate = useNavigate();
 

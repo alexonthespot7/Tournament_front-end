@@ -240,7 +240,7 @@ export default function Bracket() {
 
                                             // The end vertical position for the second line (vertical one):
                                             // for the rounds with even indexes line should go down, for the rounds with odd indexes the line should go up
-                                            const endVerticalLine2Pos = verticalLine1Pos + (roundIndex % 2 == 0 ? additionalHeightForEndVerticalLine2Pos : -additionalHeightForEndVerticalLine2Pos);
+                                            const endVerticalLine2Pos = verticalLine1Pos + (roundIndex % 2 === 0 ? additionalHeightForEndVerticalLine2Pos : -additionalHeightForEndVerticalLine2Pos);
 
                                             // The end horizontal position for the third line (the last one, horizontal);
                                             const endHorizontalLine3Pos = endHorizontalLine1Pos + stageSpacing / 2;
