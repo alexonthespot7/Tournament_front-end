@@ -1,7 +1,8 @@
 # Tournament App Front-end
 
-> This React.js application serves as the client-side interface for a comprehensive tournament management system. 
-> Seamlessly designed for user interaction, it offers a range of functionalities to cater to both tournament participants and administrators.
+> This React.js application serves as the client-side interface for a comprehensive tournament management system.<br> 
+> Seamlessly designed for user interaction, it offers a range of functionalities to cater to both tournament participants and administrators.<br>
+> The back-end side can be found [here](https://github.com/alexonthespot7/Tournament_back-end)
 
 ## Table of Contents
 * [Usage Guide](#usage-guide)
@@ -11,12 +12,26 @@
 * [Screenshots](#screenshots)
 
 ## Usage Guide
-1. Clone the project <br>```git clone https://github.com/alexonthespot7/Tournament_front-end.git```<br>
-2. run the following command in a terminal window (in the complete) directory:<br>
+1. Back-end: To start application you should first run the back-end app on your computer
+    1. Clone the project <br>```git clone https://github.com/alexonthespot7/Tournament_back-end.git```<br>
+    2. Set the environmental variables<br>
+To activate smtp service functionality you will need to set the following env variables with some real data.<br>For that run the following commands in the command line:<br>
+    ```$Env:SPRING_MAIL_HOST="your_smtp_host"```<br>
+    ```$Env:SPRING_MAIL_USERNAME="your_smtp_username"```<br>
+    ```$Env:SPRING_MAIL_PASSWORD="your_smtp_password"```<br>
+    3. Run the following command in a terminal window (in the complete) directory:<br>
+```./mvnw spring-boot:run```<br>
+2. Front-end: After the back-end app was successfully launched you can run the front-end side
+    1. Clone the project <br>```git clone https://github.com/alexonthespot7/Tournament_front-end.git```<br>
+    2. run the following command in a terminal window (in the complete) directory:<br>
 ```npm install```<br>
-3. run the following command in a terminal window (in the complete) directory:<br>
+    3. run the following command in a terminal window (in the complete) directory:<br>
 ```npm start```<br>
-4. Navigate to localhost:3000
+    4. Navigate to localhost:3000
+  
+ADMIN credentials:<br>
+* password: asas2233<br>
+* username: admin
 
 ## Features
 ### For User
