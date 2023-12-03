@@ -132,7 +132,7 @@ export default function RoundsAdmin() {
                         <Box
                             display='flex'
                             width={isNormalSize ? '70%' : '85%'}
-                            justifyContent='left'
+                            justifyContent='right'
                         >
                             <ConfirmResults
                                 setLoading={setLoading}
