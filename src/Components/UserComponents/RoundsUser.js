@@ -120,7 +120,7 @@ export default function RoundsUser() {
             flexDirection='column'
             justifyContent='center'
             alignItems='center'
-            height='100%'
+            height='90%'
         >
             {!loading &&
                 <>

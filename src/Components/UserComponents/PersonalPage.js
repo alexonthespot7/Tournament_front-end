@@ -59,7 +59,8 @@ export default function PersonalPage() {
     }
 
     const findOpponent = (round) => {
-        return round.usernameOfCompetitor1 === personalInfo.username ? round.usernameOfCompetitor2 : round.usernameOfCompetitor1;
+        let opponent = round.usernameOfCompetitor1 === personalInfo.username ? round.usernameOfCompetitor2 : round.usernameOfCompetitor1;
+        return opponent ? opponent : '—';
     }
 
     //different sorting cases

@@ -124,6 +124,7 @@ export default function UserMainContent() {
             gap={windowSize.height / 75}
             width='100%'
             justifyContent='center'
+            alignItems='center'
         >
             {!loading &&
                 <>
