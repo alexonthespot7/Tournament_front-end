@@ -5,9 +5,9 @@ import MyToolbar from './Components/Toolbar/MyToolbar';
 
 function App() {
   return (
-    <div className="App">
+    <div className='App'>
       <MyToolbar />
-      <div className="App-header">
+      <div className='App-header'>
         <AllRoutes />
       </div>
     </div>

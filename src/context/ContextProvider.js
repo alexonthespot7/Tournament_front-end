@@ -1,13 +1,14 @@
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from 'react';
 
-import ContextWrapper from "./ContextWrapper";
-
+import { Snackbar } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
-import { Snackbar } from "@mui/material";
-import Cookies from "js-cookie";
+
+import Cookies from 'js-cookie';
+
+import ContextWrapper from './ContextWrapper';
 
 const Alert = forwardRef(function Alert(props, ref) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
 });
 
 function ContextProvider(props) {
@@ -58,7 +59,7 @@ function ContextProvider(props) {
         return () => {
             window.removeEventListener('resize', updateWindowSize);
         };
-    }, []); // Empty dependency array ensures this effect runs only once
+    }, []);
 
     //the variable will be used for conditional rendering to make design responsive
     const isNormalSize = (windowSize.width > 900 && windowSize.height > 475);

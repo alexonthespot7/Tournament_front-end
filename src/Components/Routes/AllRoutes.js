@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
-import Main from '../Main';
+import Main from '../MainPageComponents/Main';
 import PublicRoute from './PublicRoute';
 import Signup from '../PublicComponents/Signup';
 import Login from '../PublicComponents/Login';
