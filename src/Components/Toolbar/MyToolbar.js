@@ -5,11 +5,13 @@ import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
 import WestIcon from '@mui/icons-material/West';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-import logo_transparent from '../../assets/logo_transparent.png';
-
-import ContextWrapper from "../../context/ContextWrapper";
-import Cookies from 'js-cookie';
 import { useLocation, useNavigate } from 'react-router-dom';
+
+import Cookies from 'js-cookie';
+
+import ContextWrapper from '../../context/ContextWrapper';
+
+import logo_transparent from '../../assets/logo_transparent.png';
 
 export default function MyToolbar() {
     const { windowSize, size, makeSuccessAlert, isNormalSize, deleteCookies } = useContext(ContextWrapper);

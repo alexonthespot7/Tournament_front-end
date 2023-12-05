@@ -1,9 +1,12 @@
-import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField } from "@mui/material";
-import { useContext } from "react";
-import { useState } from "react";
-import ContextWrapper from "../../context/ContextWrapper";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { useContext, useState } from 'react';
+
+import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField } from '@mui/material';
+
+import { useNavigate } from 'react-router-dom';
+
+import Cookies from 'js-cookie';
+
+import ContextWrapper from '../../context/ContextWrapper';
 
 const initialUserForm = {
     isCompetitor: false,
@@ -16,11 +19,10 @@ const initialUserForm = {
 
 export default function AddUser({ bracketMade, fetchUsersPageForm }) {
     const [loading, setLoading] = useState(false);
-
     const [openDialog, setOpenDialog] = useState(false);
     const [user, setUser] = useState({});
 
-    const { makeBlackAlert, makeErrorAlert, makeSuccessAlert, isNormalSize, size, deleteCookies } = useContext(ContextWrapper);
+    const { makeBlackAlert, makeErrorAlert, makeSuccessAlert, isNormalSize, size, deleteCookies, checkResponseLength } = useContext(ContextWrapper);
 
     const navigate = useNavigate();
 
@@ -74,15 +76,15 @@ export default function AddUser({ bracketMade, fetchUsersPageForm }) {
                 setLoading(false);
                 makeSuccessAlert('User was added successfully');
             } else if (response.status === 401) {
-                makeErrorAlert(await response.text());
+                checkResponseLength(response);
                 deleteCookies();
                 navigate('/login');
             } else if (response.status === 403) {
-                makeErrorAlert(await response.text());
+                checkResponseLength(response);
                 navigate('/');
             } else {
                 setLoading(false);
-                makeErrorAlert(await response.text());
+                checkResponseLength(response);
             }
         } catch (error) {
             makeErrorAlert(error.message);
@@ -114,7 +116,7 @@ export default function AddUser({ bracketMade, fetchUsersPageForm }) {
                                 onChange={inputChanged}
                                 label='Username'
                                 fullWidth
-                                variant="standard"
+                                variant='standard'
                             />
                             <TextField
                                 color='secondary'
@@ -125,14 +127,14 @@ export default function AddUser({ bracketMade, fetchUsersPageForm }) {
                                 onChange={inputChanged}
                                 label='Email'
                                 fullWidth
-                                variant="standard"
+                                variant='standard'
                             />
                             <TextField
                                 color='secondary'
                                 size={size}
                                 fullWidth
-                                margin="dense"
-                                variant="standard"
+                                margin='dense'
+                                variant='standard'
                                 type='password'
                                 name='password'
                                 onChange={inputChanged}
@@ -143,13 +145,13 @@ export default function AddUser({ bracketMade, fetchUsersPageForm }) {
                                 color='secondary'
                                 size={size}
                                 select
-                                margin="dense"
+                                margin='dense'
                                 name='role'
                                 value={user.role}
                                 onChange={inputChanged}
                                 label='Role'
                                 fullWidth
-                                variant="standard"
+                                variant='standard'
                             >
                                 <MenuItem value={'ADMIN'}>
                                     ADMIN
@@ -163,13 +165,13 @@ export default function AddUser({ bracketMade, fetchUsersPageForm }) {
                                     color='secondary'
                                     size={size}
                                     select
-                                    margin="dense"
+                                    margin='dense'
                                     name='isCompetitor'
                                     value={user.isCompetitor}
                                     onChange={inputChanged}
                                     label='Participant?'
                                     fullWidth
-                                    variant="standard"
+                                    variant='standard'
                                 >
                                     <MenuItem value={true}>
                                         Yes
@@ -183,13 +185,13 @@ export default function AddUser({ bracketMade, fetchUsersPageForm }) {
                                 color='secondary'
                                 size={size}
                                 select
-                                margin="dense"
+                                margin='dense'
                                 name='isVerified'
                                 value={user.isVerified}
                                 onChange={inputChanged}
                                 label='Verified?'
                                 fullWidth
-                                variant="standard"
+                                variant='standard'
                             >
                                 <MenuItem value={true}>
                                     Yes

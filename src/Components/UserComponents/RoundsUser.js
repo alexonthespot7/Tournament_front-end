@@ -5,10 +5,11 @@ import { Box, Card, CircularProgress, List, ListSubheader, Typography } from '@m
 import NorthIcon from '@mui/icons-material/North';
 import SouthIcon from '@mui/icons-material/South';
 
+import { useNavigate } from 'react-router-dom';
+
 import Cookies from 'js-cookie';
 
 import ContextWrapper from '../../context/ContextWrapper';
-import { useNavigate } from 'react-router-dom';
 
 const findUsernameOfContestant = (username) => {
     return username ? username : '—';
@@ -21,7 +22,7 @@ export default function RoundsUser() {
     //state for sort handling
     const [sortState, setSortState] = useState('none');
 
-    const { windowSize, makeErrorAlert, makeWarningAlert, headerVariant, isNormalSize, deleteCookies } = useContext(ContextWrapper);
+    const { windowSize, makeErrorAlert, makeWarningAlert, headerVariant, isNormalSize, deleteCookies, checkResponseLength } = useContext(ContextWrapper);
 
     const navigate = useNavigate();
 
@@ -48,7 +49,7 @@ export default function RoundsUser() {
                     navigate('/login');
                     makeErrorAlert('Your session has expired, login again please');
                 } else {
-                    makeErrorAlert(await response.text())
+                    checkResponseLength(response);
                 }
                 return null;
             }
@@ -109,7 +110,11 @@ export default function RoundsUser() {
     }
 
     const handleSortState = (property) => {
-        sortState.includes('_asc') ? setSortState(`${property}_desc`) : sortState.includes('_desc') ? setSortState('none') : setSortState(`${property}_asc`);
+        sortState.includes('_asc')
+            ? setSortState(`${property}_desc`)
+            : sortState.includes('_desc')
+                ? setSortState('none')
+                : setSortState(`${property}_asc`);
     }
 
     return (

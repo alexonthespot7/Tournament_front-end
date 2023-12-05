@@ -1,12 +1,16 @@
-import { useContext } from "react";
-import ContextWrapper from "../../context/ContextWrapper";
-import { Button } from "@mui/material";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { useContext } from 'react';
+
+import { Button } from '@mui/material';
+
+import { useNavigate } from 'react-router-dom';
+
+import Cookies from 'js-cookie';
+
+import ContextWrapper from '../../context/ContextWrapper';
 
 export default function ConfirmResults({ setLoading, fetchRoundsForm }) {
 
-    const { makeErrorAlert, makeSuccessAlert, size, deleteCookies } = useContext(ContextWrapper);
+    const { makeErrorAlert, makeSuccessAlert, size, deleteCookies, checkResponseLength } = useContext(ContextWrapper);
 
     const navigate = useNavigate();
 
@@ -31,12 +35,12 @@ export default function ConfirmResults({ setLoading, fetchRoundsForm }) {
                     navigate('/login');
                     makeErrorAlert('Your session has expired. Please login again');
                 } else if (response.status === 406) {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                 } else if (response.status === 403) {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                     navigate('/');
                 } else {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                 }
             } else {
                 fetchRoundsForm();

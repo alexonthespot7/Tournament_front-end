@@ -1,14 +1,18 @@
-import { MenuItem, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
-import { useContext, useState } from "react";
-import ContextWrapper from "../../context/ContextWrapper";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { useContext, useState } from 'react';
+
+import { MenuItem, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+
+import { useNavigate } from 'react-router-dom';
+
+import Cookies from 'js-cookie';
+
+import ContextWrapper from '../../context/ContextWrapper';
 
 export default function SetResult({ round, fetchRoundsForm, setLoading }) {
     const [openDialog, setOpenDialog] = useState(false);
     const [roundUpdated, setRoundUpdated] = useState({});
 
-    const { windowSize, makeErrorAlert, makeWarningAlert, makeSuccessAlert, headerVariant, isNormalSize, size, deleteCookies } = useContext(ContextWrapper);
+    const { makeErrorAlert, makeSuccessAlert, isNormalSize, size, deleteCookies, checkResponseLength } = useContext(ContextWrapper);
 
     const navigate = useNavigate();
 
@@ -51,13 +55,13 @@ export default function SetResult({ round, fetchRoundsForm, setLoading }) {
                     navigate('/login');
                     makeErrorAlert('Your session has expired. Please login again');
                 } else if (response.status === 403) {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                     navigate('/');
                 } else if ([400, 409].includes(response.status)) {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                     setLoading(false);
                 } else if (response.status === 406) {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                     fetchRoundsForm();
                 }
             } else {
@@ -80,55 +84,59 @@ export default function SetResult({ round, fetchRoundsForm, setLoading }) {
                 Set Result
             </Button>
             <Dialog open={openDialog} onClose={handleClose}>
-                <DialogTitle fontSize={isNormalSize ? 20 : 17}>Edit Round {round.roundid}</DialogTitle>
+                <DialogTitle
+                    fontSize={isNormalSize ? 20 : 17}
+                >
+                    Edit Round {round.roundid}
+                </DialogTitle>
                 <DialogContent>
                     <TextField
                         color='secondary'
                         size={size}
-                        margin="dense"
+                        margin='dense'
                         name='stage.stage'
                         value={round.stage.stage}
                         onChange={inputChanged}
                         label='Stage'
                         fullWidth
-                        variant="standard"
+                        variant='standard'
                         disabled
                     />
                     <TextField
                         color='secondary'
                         size={size}
-                        margin="dense"
+                        margin='dense'
                         name='user1.username'
                         value={round.user1.username}
                         onChange={inputChanged}
                         label='Contestant 1'
                         fullWidth
-                        variant="standard"
+                        variant='standard'
                         disabled
                     />
                     <TextField
                         color='secondary'
                         size={size}
-                        margin="dense"
+                        margin='dense'
                         name='user2.username'
                         value={round.user2.username}
                         onChange={inputChanged}
                         label='Contestant 2'
                         fullWidth
-                        variant="standard"
+                        variant='standard'
                         disabled
                     />
                     <TextField
                         color='secondary'
                         size={size}
                         select
-                        margin="dense"
+                        margin='dense'
                         name='result'
                         value={roundUpdated.result}
                         onChange={inputChanged}
                         label='Stage'
                         fullWidth
-                        variant="standard"
+                        variant='standard'
                     >
                         <MenuItem value={round.user1.username + ' win'}>
                             {round.user1.username + ' win'}

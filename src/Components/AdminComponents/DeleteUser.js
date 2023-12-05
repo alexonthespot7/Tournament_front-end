@@ -1,14 +1,18 @@
+import { useContext } from 'react';
+
 import { IconButton } from '@mui/material';
 
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useContext } from 'react';
-import ContextWrapper from '../../context/ContextWrapper';
-import Cookies from 'js-cookie';
+
 import { useNavigate } from 'react-router-dom';
+
+import Cookies from 'js-cookie';
+
+import ContextWrapper from '../../context/ContextWrapper';
 
 export default function DeleteUser({ userId, setLoading, fetchUsersPageForm }) {
 
-    const { makeErrorAlert, makeSuccessAlert, size, deleteCookies } = useContext(ContextWrapper);
+    const { makeErrorAlert, makeSuccessAlert, size, deleteCookies, checkResponseLength } = useContext(ContextWrapper);
 
     const navigate = useNavigate();
 
@@ -33,13 +37,13 @@ export default function DeleteUser({ userId, setLoading, fetchUsersPageForm }) {
                     navigate('/login');
                     makeErrorAlert('Your session has expired. Please login again');
                 } else if (response.status === 403) {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                     navigate('/');
                 } else if ([400, 409].includes(response.status)) {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                     setLoading(false);
                 } else {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                 }
             } else {
                 fetchUsersPageForm();

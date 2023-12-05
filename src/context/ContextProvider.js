@@ -21,6 +21,16 @@ function ContextProvider(props) {
     const [alertColor, setAlertColor] = useState('secondary');
     const [alertOpen, setAlertOpen] = useState(false);
 
+    //Sometimes the server returns technical text as response.text() value. In that case the text shouldn't be placed in snackbar;
+    const checkResponseLength = async (response) => {
+        const responseText = await response.text();
+        if (responseText.length > 200) {
+            makeErrorAlert('Something wrong with the server');
+        } else {
+            makeErrorAlert(responseText);
+        }
+    }
+
     const invokeAlert = (text, color) => {
         setAlertOpen(true);
         setAlertColor(color);
@@ -79,7 +89,7 @@ function ContextProvider(props) {
             value={{
                 windowSize, makeErrorAlert, makeBlackAlert,
                 makeWarningAlert, makeSuccessAlert, headerVariant,
-                size, isNormalSize, deleteCookies
+                size, isNormalSize, deleteCookies, checkResponseLength
             }}
         >
             {props.children}

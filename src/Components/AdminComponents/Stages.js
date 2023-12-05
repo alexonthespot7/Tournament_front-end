@@ -1,18 +1,25 @@
-import { Box, CircularProgress, Typography } from "@mui/material";
-import { AgGridReact } from "ag-grid-react";
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
+
+import { useContext, useEffect, useState } from 'react';
+
+import { Box, CircularProgress, Typography } from '@mui/material';
+
 import FlagIcon from '@mui/icons-material/Flag';
-import { useContext, useEffect, useState } from "react";
-import ContextWrapper from "../../context/ContextWrapper";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+
+import { AgGridReact } from 'ag-grid-react';
+
+import { useNavigate } from 'react-router-dom';
+
+import Cookies from 'js-cookie';
+
+import ContextWrapper from '../../context/ContextWrapper';
 
 export default function Stages() {
     const [loading, setLoading] = useState(true);
     const [stages, setStages] = useState([]);
 
-    const { makeErrorAlert, makeWarningAlert, headerVariant, isNormalSize, deleteCookies } = useContext(ContextWrapper);
+    const { makeErrorAlert, makeWarningAlert, headerVariant, isNormalSize, deleteCookies, checkResponseLength } = useContext(ContextWrapper);
 
     const navigate = useNavigate();
 
@@ -37,10 +44,10 @@ export default function Stages() {
                     navigate('/login');
                     makeErrorAlert('Your session has expired, login again please');
                 } else if (response.status === 403) {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                     navigate('/');
                 } else {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                 }
                 return null;
             }
@@ -73,7 +80,10 @@ export default function Stages() {
         >
             {!loading &&
                 <>
-                    <Typography variant={headerVariant} sx={{ mb: '2%' }}>
+                    <Typography
+                        variant={headerVariant}
+                        sx={{ mb: '2%' }}
+                    >
                         Stages
                     </Typography>
                     <div

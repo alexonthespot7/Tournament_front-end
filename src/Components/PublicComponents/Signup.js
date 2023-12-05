@@ -2,8 +2,9 @@ import { useContext, useEffect, useState } from 'react';
 
 import { Box, Button, CircularProgress, MenuItem, TextField, Typography } from '@mui/material';
 
-import ContextWrapper from '../../context/ContextWrapper';
 import { useNavigate } from 'react-router-dom';
+
+import ContextWrapper from '../../context/ContextWrapper';
 
 const initialSignupForm = {
     isCompetitor: false,
@@ -11,9 +12,6 @@ const initialSignupForm = {
     email: '',
     password: ''
 }
-
-const coefficient = 2600000;
-const baseWidthPercentage = 32;
 
 export default function Signup() {
     const [loading, setLoading] = useState(true);
@@ -24,10 +22,13 @@ export default function Signup() {
     const {
         windowSize, makeErrorAlert, makeBlackAlert,
         makeSuccessAlert, isNormalSize, headerVariant,
-        size
+        size, checkResponseLength
     } = useContext(ContextWrapper);
 
     const navigate = useNavigate();
+
+    const coefficient = 2600000;
+    const baseWidthPercentage = 32;
 
     // The size variables for responsiveness of the page
     const boxWidthPercentage = `${coefficient / Math.pow(windowSize.width, 1.7) + baseWidthPercentage}%`;
@@ -71,7 +72,7 @@ export default function Signup() {
                 navigate('/login');
             } else {
                 setLoading(false);
-                makeErrorAlert(await response.text());
+                checkResponseLength(response);
             }
         } catch (error) {
             makeErrorAlert(error.message);

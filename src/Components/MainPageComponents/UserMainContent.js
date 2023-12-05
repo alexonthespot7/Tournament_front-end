@@ -1,10 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { Box, Button, CircularProgress } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 
 import Cookies from 'js-cookie';
-
-import { useNavigate } from 'react-router-dom';
 
 import ContextWrapper from '../../context/ContextWrapper';
 import ContainedButton from './ContainedButton';
@@ -14,9 +12,7 @@ export default function UserMainContent() {
     const [roundsQuantity, setRoundsQuantity] = useState(0);
     const [loading, setLoading] = useState(true);
 
-    const { windowSize, makeErrorAlert, size } = useContext(ContextWrapper);
-
-    const navigate = useNavigate();
+    const { windowSize, makeErrorAlert } = useContext(ContextWrapper);
 
     useEffect(() => {
         fetchRoundsQuantity();

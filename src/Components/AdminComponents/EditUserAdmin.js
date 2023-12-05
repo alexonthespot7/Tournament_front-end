@@ -1,17 +1,21 @@
-import EditIcon from '@mui/icons-material/Edit';
+import { useContext, useState } from 'react';
+
 import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, TextField } from '@mui/material';
-import { useContext } from 'react';
-import { useState } from 'react';
-import ContextWrapper from '../../context/ContextWrapper';
-import Cookies from 'js-cookie';
+
+import EditIcon from '@mui/icons-material/Edit';
+
 import { useNavigate } from 'react-router-dom';
+
+import Cookies from 'js-cookie';
+
+import ContextWrapper from '../../context/ContextWrapper';
 
 export default function EditUserAdmin({ fetchUsersPageForm, user, bracketMade }) {
     const [loading, setLoading] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const [userUpdated, setUserUpdated] = useState({});
 
-    const { makeErrorAlert, makeSuccessAlert, makeBlackAlert, isNormalSize, size, deleteCookies } = useContext(ContextWrapper);
+    const { makeErrorAlert, makeSuccessAlert, makeBlackAlert, isNormalSize, size, deleteCookies, checkResponseLength } = useContext(ContextWrapper);
 
     const navigate = useNavigate();
 
@@ -65,15 +69,15 @@ export default function EditUserAdmin({ fetchUsersPageForm, user, bracketMade })
                 setLoading(false);
                 makeSuccessAlert('User was updated successfully');
             } else if (response.status === 401) {
-                makeErrorAlert(await response.text());
+                checkResponseLength(response);
                 deleteCookies();
                 navigate('/login');
             } else if (response.status === 403) {
-                makeErrorAlert(await response.text());
+                checkResponseLength(response);
                 navigate('/');
             } else {
                 setLoading(false);
-                makeErrorAlert(await response.text());
+                checkResponseLength(response);
             }
         } catch (error) {
             makeErrorAlert(error.message);
@@ -96,7 +100,7 @@ export default function EditUserAdmin({ fetchUsersPageForm, user, bracketMade })
                             <TextField
                                 color='secondary'
                                 size={size}
-                                margin="dense"
+                                margin='dense'
                                 name='username'
                                 value={userUpdated.username}
                                 onChange={inputChanged}
@@ -107,7 +111,7 @@ export default function EditUserAdmin({ fetchUsersPageForm, user, bracketMade })
                             <TextField
                                 color='secondary'
                                 size={size}
-                                margin="dense"
+                                margin='dense'
                                 name='email'
                                 value={userUpdated.email}
                                 onChange={inputChanged}
@@ -120,7 +124,7 @@ export default function EditUserAdmin({ fetchUsersPageForm, user, bracketMade })
                                     color='secondary'
                                     size={size}
                                     select
-                                    margin="dense"
+                                    margin='dense'
                                     name='role'
                                     value={userUpdated.role}
                                     onChange={inputChanged}
@@ -141,7 +145,7 @@ export default function EditUserAdmin({ fetchUsersPageForm, user, bracketMade })
                                     color='secondary'
                                     size={size}
                                     select
-                                    margin="dense"
+                                    margin='dense'
                                     name='isCompetitor'
                                     value={userUpdated.isCompetitor}
                                     onChange={inputChanged}
@@ -162,7 +166,7 @@ export default function EditUserAdmin({ fetchUsersPageForm, user, bracketMade })
                                     color='secondary'
                                     size={size}
                                     select
-                                    margin="dense"
+                                    margin='dense'
                                     name='accountVerified'
                                     value={userUpdated.accountVerified}
                                     onChange={inputChanged}

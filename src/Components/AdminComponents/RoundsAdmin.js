@@ -1,13 +1,20 @@
-import { useContext, useEffect, useState } from 'react';
-import { Box, CircularProgress, Typography } from '@mui/material';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
+
+import { useContext, useEffect, useState } from 'react';
+
+import { Box, CircularProgress, Typography } from '@mui/material';
+
 import { AgGridReact } from 'ag-grid-react';
-import SetResult from './SetResult';
+
+import { useNavigate } from 'react-router-dom';
+
 import Cookies from 'js-cookie';
+
 import ContextWrapper from '../../context/ContextWrapper';
 import ConfirmResults from './ConfirmResults';
-import { useNavigate } from 'react-router-dom';
+import SetResult from './SetResult';
+
 
 export const findUsernameOfContestant = (username) => {
     return username ? username : '—';
@@ -17,7 +24,7 @@ export default function RoundsAdmin() {
     const [loading, setLoading] = useState(true);
     const [roundsFormAdmin, setRoundsFormAdmin] = useState(null);
 
-    const { makeErrorAlert, makeWarningAlert, headerVariant, isNormalSize, deleteCookies } = useContext(ContextWrapper);
+    const { makeErrorAlert, makeWarningAlert, headerVariant, isNormalSize, deleteCookies, checkResponseLength } = useContext(ContextWrapper);
 
     const navigate = useNavigate();
 
@@ -42,10 +49,10 @@ export default function RoundsAdmin() {
                     navigate('/login');
                     makeErrorAlert('Your session has expired, login again please');
                 } else if (response.status === 403) {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                     navigate('/');
                 } else {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                 }
                 return null;
             }

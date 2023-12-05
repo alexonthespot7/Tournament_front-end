@@ -2,14 +2,15 @@ import { useContext } from 'react';
 
 import { Button } from '@mui/material';
 
+import { useNavigate } from 'react-router-dom';
+
 import Cookies from 'js-cookie';
 
 import ContextWrapper from '../../context/ContextWrapper';
-import { useNavigate } from 'react-router-dom';
 
 export default function MakeBracket({ buttonSx, setLoading, fetchUsersPageForm }) {
 
-    const { makeErrorAlert, makeSuccessAlert, size, deleteCookies } = useContext(ContextWrapper);
+    const { makeErrorAlert, makeSuccessAlert, size, deleteCookies, checkResponseLength } = useContext(ContextWrapper);
 
     const navigate = useNavigate();
 
@@ -34,13 +35,13 @@ export default function MakeBracket({ buttonSx, setLoading, fetchUsersPageForm }
                     navigate('/login');
                     makeErrorAlert('Your session has expired. Please login again');
                 } else if (response.status === 406) {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                     fetchUsersPageForm();
                 } else if (response.status === 403) {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                     navigate('/');
                 } else {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                 }
             } else {
                 fetchUsersPageForm();

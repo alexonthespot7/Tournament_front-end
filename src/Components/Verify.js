@@ -9,7 +9,7 @@ import ContextWrapper from '../context/ContextWrapper';
 export default function Verify() {
     const [searchParams, setSearchParams] = useSearchParams({});
 
-    const { makeErrorAlert, makeSuccessAlert, deleteCookies } = useContext(ContextWrapper);
+    const { makeErrorAlert, makeSuccessAlert, deleteCookies, checkResponseLength } = useContext(ContextWrapper);
 
     const navigate = useNavigate();
 
@@ -40,7 +40,7 @@ export default function Verify() {
                 makeErrorAlert('Your session has expired, please login again');
             } else {
                 navigate('/');
-                makeErrorAlert(await response.text());
+                checkResponseLength(response);
             }
         } catch (error) {
             navigate('/');

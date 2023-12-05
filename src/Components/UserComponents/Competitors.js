@@ -40,7 +40,7 @@ export default function Competitors() {
     //state for sort handling
     const [sortState, setSortState] = useState('none');
 
-    const { windowSize, makeErrorAlert, headerVariant, isNormalSize, deleteCookies } = useContext(ContextWrapper);
+    const { windowSize, makeErrorAlert, headerVariant, isNormalSize, deleteCookies, checkResponseLength } = useContext(ContextWrapper);
 
     // Variables for making size responsible, depending on the screen size;
     const listHeadersSize = isNormalSize ? 20 : 17;
@@ -76,7 +76,7 @@ export default function Competitors() {
                     deleteCookies();
                     makeErrorAlert('Your session has expired, login again please');
                 } else {
-                    makeErrorAlert(await response.text())
+                    checkResponseLength(response);
                 }
                 return null;
             }
@@ -94,16 +94,14 @@ export default function Competitors() {
 
     const filteredCompetitors = competitors.sort(sortMethods[sortState].method);
 
-    const sortStages = () => {
-        sortState === 'stage_asc' ? setSortState('stage_desc') : sortState === 'stage_desc' ? setSortState('none') : setSortState('stage_asc');
-    }
-
-    const sortUsername = () => {
-        sortState === 'username_asc' ? setSortState('username_desc') : sortState === 'username_desc' ? setSortState('none') : setSortState('username_asc');
-    }
-
-    const sortStatus = () => {
-        sortState === 'status_asc' ? setSortState('status_desc') : sortState === 'status_desc' ? setSortState('none') : setSortState('status_asc');
+    const sortField = (field) => {
+        const fieldAsc = `${field}_asc`;
+        const fieldDesc = `${field}_desc`;
+        sortState === fieldAsc
+            ? setSortState(fieldDesc)
+            : sortState === fieldDesc
+                ? setSortState('none')
+                : setSortState(fieldAsc);
     }
 
     return (
@@ -152,7 +150,7 @@ export default function Competitors() {
                                         fontWeight={900}
                                         fontSize={listHeadersSize}
                                         sx={{ '&:hover': { cursor: 'pointer' } }}
-                                        onClick={sortStages}
+                                        onClick={() => sortField('stage')}
                                     >
                                         Stage
                                     </Typography>
@@ -171,7 +169,7 @@ export default function Competitors() {
                                         fontWeight={900}
                                         fontSize={listHeadersSize}
                                         sx={{ '&:hover': { cursor: 'pointer' } }}
-                                        onClick={sortUsername}
+                                        onClick={() => sortField('username')}
                                     >
                                         Username
                                     </Typography>
@@ -192,7 +190,7 @@ export default function Competitors() {
                                         fontWeight={900}
                                         fontSize={listHeadersSize}
                                         sx={{ '&:hover': { cursor: 'pointer' } }}
-                                        onClick={sortStatus}
+                                        onClick={() => sortField('status')}
                                     >
                                         Status
                                     </Typography>

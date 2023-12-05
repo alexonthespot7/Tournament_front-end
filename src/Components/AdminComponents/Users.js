@@ -1,28 +1,29 @@
-import { useContext, useEffect, useState } from 'react';
-
-import { Box, Button, CircularProgress, IconButton, Typography } from '@mui/material';
-
-import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
+
+import { useContext, useEffect, useState } from 'react';
+
+import { Box, Button, CircularProgress, Typography } from '@mui/material';
+
+import { AgGridReact } from 'ag-grid-react';
+
+import { useNavigate } from 'react-router-dom';
 
 import Cookies from 'js-cookie';
 
 import ContextWrapper from '../../context/ContextWrapper';
-
 import EditUserAdmin from './EditUserAdmin';
 import AddUser from './AddUser';
 import MakeBracket from './MakeBracket';
 import Reset from './Reset';
 import MakeAllCompetitors from './MakeAllCompetitors';
 import DeleteUser from './DeleteUser';
-import { useNavigate } from 'react-router-dom';
 
 export default function Users() {
     const [loading, setLoading] = useState(true);
     const [usersPageForm, setUsersPageForm] = useState(null);
 
-    const { windowSize, makeErrorAlert, makeWarningAlert, headerVariant, isNormalSize, size, deleteCookies } = useContext(ContextWrapper);
+    const { windowSize, makeErrorAlert, makeWarningAlert, headerVariant, isNormalSize, size, deleteCookies, checkResponseLength } = useContext(ContextWrapper);
 
     const navigate = useNavigate();
 
@@ -47,10 +48,10 @@ export default function Users() {
                     navigate('/login');
                     makeErrorAlert('Your session has expired, login again please');
                 } else if (response.status === 403) {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                     navigate('/');
                 } else {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                 }
                 return null;
             }
@@ -73,9 +74,27 @@ export default function Users() {
         { headerName: 'Username', field: 'username' },
         { headerName: 'Email', field: 'email' },
         { width: 100, headerName: 'Status', field: 'isOut', cellRenderer: params => { return <Typography fontSize={textSize}>{params.value ? 'Out' : 'In'}</Typography> } },
-        { width: 130, headerName: 'Participant?', field: 'isCompetitor', cellRenderer: params => { return <Typography fontSize={textSize}>{params.value.toString()}</Typography> } },
+        {
+            width: 130, headerName: 'Participant?', field: 'isCompetitor',
+            cellRenderer: params => {
+                return <Typography
+                    fontSize={textSize}
+                >
+                    {params.value.toString()}
+                </Typography>
+            }
+        },
         { width: 100, headerName: 'Stage', field: 'stage.stage' },
-        { width: 100, headerName: 'Role', field: 'role', cellRenderer: params => { return <Typography fontSize={textSize}>{params.value.toLowerCase()}</Typography> } },
+        {
+            width: 100, headerName: 'Role', field: 'role',
+            cellRenderer: params => {
+                return <Typography
+                    fontSize={textSize}
+                >
+                    {params.value.toLowerCase()}
+                </Typography>
+            }
+        },
         { width: 100, headerName: 'Verified', field: 'accountVerified', cellRenderer: params => { return <Typography fontSize={textSize}>{params.value.toString()}</Typography> } },
         {
             width: 80,
@@ -138,7 +157,7 @@ export default function Users() {
                     <div
                         className={
                             'grid-wrapper ' +
-                            "ag-theme-quartz"
+                            'ag-theme-quartz'
                         }
                         style={{
                             width: isNormalSize ? '70%' : '90%',

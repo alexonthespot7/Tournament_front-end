@@ -2,9 +2,11 @@ import { useContext, useState } from 'react';
 
 import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 
-import ContextWrapper from '../../context/ContextWrapper';
-import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+
+import Cookies from 'js-cookie';
+
+import ContextWrapper from '../../context/ContextWrapper';
 
 const initialPasswordForm = {
     oldPassword: '',
@@ -19,7 +21,8 @@ export default function ChangePassword() {
 
     const {
         makeErrorAlert, makeBlackAlert,
-        makeSuccessAlert, isNormalSize, size, deleteCookies
+        makeSuccessAlert, isNormalSize, size,
+        deleteCookies, checkResponseLength
     } = useContext(ContextWrapper);
 
     const navigate = useNavigate();
@@ -65,7 +68,7 @@ export default function ChangePassword() {
                     navigate('/login');
                     makeErrorAlert('Your session has expired. Please login again');
                 } else {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                     setLoading(false);
                 }
             } else {

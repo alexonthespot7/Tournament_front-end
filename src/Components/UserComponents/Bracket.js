@@ -4,10 +4,11 @@ import { Box, CircularProgress } from '@mui/material';
 
 import { ReactSVGPanZoom } from 'react-svg-pan-zoom';
 
+import { useNavigate } from 'react-router-dom';
+
 import Cookies from 'js-cookie';
 
 import ContextWrapper from '../../context/ContextWrapper';
-import { useNavigate } from 'react-router-dom';
 
 const stageWidth = 200;
 
@@ -52,7 +53,7 @@ export default function Bracket() {
         // Function logic for mouse leave
     }, []);
 
-    const { windowSize, makeErrorAlert, makeWarningAlert, deleteCookies } = useContext(ContextWrapper);
+    const { windowSize, makeErrorAlert, makeWarningAlert, deleteCookies, checkResponseLength } = useContext(ContextWrapper);
 
     const navigate = useNavigate();
 
@@ -76,7 +77,7 @@ export default function Bracket() {
                     navigate('/login');
                     makeErrorAlert('Your session has expired, login again please');
                 } else {
-                    makeErrorAlert(await response.text())
+                    checkResponseLength(response);
                 }
                 return null;
             }

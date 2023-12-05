@@ -5,19 +5,17 @@ import { Box, Button, CircularProgress, IconButton, InputAdornment, OutlinedInpu
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+import { useNavigate } from 'react-router-dom';
+
 import Cookies from 'js-cookie';
 
 import ContextWrapper from '../../context/ContextWrapper';
-import { useNavigate } from 'react-router-dom';
 import ForgotPassword from './ForgotPassword';
 
 const initialCredentials = {
     username: '',
     password: ''
 }
-
-const coefficient = 1000000;
-const baseWidthPercentage = 18;
 
 export default function Login() {
     const [loading, setLoading] = useState(false);
@@ -26,10 +24,14 @@ export default function Login() {
 
     const {
         windowSize, makeErrorAlert, makeBlackAlert,
-        makeSuccessAlert, headerVariant, size
+        makeSuccessAlert, headerVariant, size,
+        checkResponseLength
     } = useContext(ContextWrapper);
 
     const navigate = useNavigate();
+
+    const coefficient = 1000000;
+    const baseWidthPercentage = 18;
 
     // The size variables for responsiveness of the page
     const boxWidthPercentage = `${coefficient / Math.pow(windowSize.width, 1.7) + baseWidthPercentage}%`;
@@ -65,7 +67,7 @@ export default function Login() {
                 makeSuccessAlert('Login process was successful');
             } else {
                 setLoading(false);
-                makeErrorAlert(await response.text());
+                checkResponseLength(response);
             }
         } catch (error) {
             makeErrorAlert('Can\'t reach the server at the moment');

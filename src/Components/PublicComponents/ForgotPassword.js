@@ -13,7 +13,7 @@ export default function ForgotPassword() {
 
     const {
         makeErrorAlert, makeBlackAlert,
-        makeSuccessAlert, size
+        makeSuccessAlert, size, checkResponseLength
     } = useContext(ContextWrapper);
 
     const handleClickOpen = () => {
@@ -55,7 +55,7 @@ export default function ForgotPassword() {
                 makeSuccessAlert('A temporary password was sent to your email address');
             } else {
                 setLoading(false);
-                makeErrorAlert(await response.text());
+                checkResponseLength(response);
             }
         } catch (error) {
             makeErrorAlert('Can\'t reach the server at the moment');

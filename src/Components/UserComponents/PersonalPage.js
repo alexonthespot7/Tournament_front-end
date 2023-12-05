@@ -32,7 +32,7 @@ export default function PersonalPage() {
     //state for sort handling
     const [sortState, setSortState] = useState('none');
 
-    const { windowSize, makeErrorAlert, makeBlackAlert, makeSuccessAlert, headerVariant, size, isNormalSize, deleteCookies } = useContext(ContextWrapper);
+    const { windowSize, makeErrorAlert, makeSuccessAlert, headerVariant, size, isNormalSize, deleteCookies, checkResponseLength } = useContext(ContextWrapper);
 
     const navigate = useNavigate();
 
@@ -111,7 +111,7 @@ export default function PersonalPage() {
                     navigate('/');
                     makeErrorAlert('This page is forbidden for you');
                 } else {
-                    makeErrorAlert(await response.text());
+                    checkResponseLength(response);
                 }
                 return null;
             }
@@ -161,7 +161,12 @@ export default function PersonalPage() {
                     navigate('/login');
                     makeErrorAlert('Your session has expired. Please login again');
                 } else {
-                    makeErrorAlert(await response.text());
+                    const responseText = await response.text();
+                    if (responseText.length > 200) {
+                        makeErrorAlert('Something wrong with the server');
+                    } else {
+                        makeErrorAlert(responseText);
+                    }
                 }
             } else {
                 setLoading(false);
