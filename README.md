@@ -18,7 +18,7 @@
 1. Back-end: To start application you should first run the back-end app on your computer
     1. Clone the project <br>```git clone https://github.com/alexonthespot7/Tournament_back-end.git```<br>
     2. Set the environmental variables<br>
-To activate smtp service functionality you will need to set the following env variables with some real data.<br>For that run the following commands in the command line:<br>
+To activate smtp service functionality you will need to set the following env variables with some real data.<br>For that run the following commands in the command line (or configure env variables in application.properties file):<br>
     ```$Env:SPRING_MAIL_HOST="your_smtp_host"```<br>
     ```$Env:SPRING_MAIL_USERNAME="your_smtp_username"```<br>
     ```$Env:SPRING_MAIL_PASSWORD="your_smtp_password"```<br>
