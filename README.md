@@ -2,7 +2,10 @@
 
 > This React.js application serves as the client-side interface for a comprehensive tournament management system.<br> 
 > Seamlessly designed for user interaction, it offers a range of functionalities to cater to both tournament participants and administrators.<br>
-> The back-end side can be found [here](https://github.com/alexonthespot7/Tournament_back-end)
+> The back-end side can be found [here](https://github.com/alexonthespot7/Tournament_back-end)<br>
+> The production version of the application can be found under the [production branch](https://github.com/alexonthespot7/Tournament_front-end/tree/production)<br>
+><br>
+> The deployed app [https://tournament-axos.netlify.app](https://tournament-axos.netlify.app/)
 
 ## Table of Contents
 * [Usage Guide](#usage-guide)
