@@ -36,7 +36,7 @@ export default function UserMainContent() {
         if (Cookies.get('role') === 'USER') {
             return (
                 <ContainedButton
-                    link='/competitor'
+                    link='/competitors'
                     content='Competitors'
                 />
             );
